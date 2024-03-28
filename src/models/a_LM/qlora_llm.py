@@ -1,4 +1,11 @@
 # source venv/bin/activate
+
+# !pip install auto-gptq
+# !pip install optimum
+# !pip install bitsandbytes
+# !pip uninstall torch -y
+# !pip install torch==2.1
+
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
