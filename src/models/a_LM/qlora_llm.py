@@ -6,22 +6,36 @@
 # !pip uninstall torch -y
 # !pip install torch==2.1
 
+"""Fine tuning Script for LLM
+Code is adapted from Shaw Talebi: https://colab.research.google.com/drive/1AErkPgDderPW0dgE230OOjEysd0QV1sR?usp=sharing
+"""
+
+import os
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 from datasets import load_dataset
 import transformers
 
+# Set the base directory for all Hugging Face caches
+base_cache_directory = "/w/331/yasamin/.cache/huggingface"
 
-"""Fine tuning Script for LLM
-Code is adapted from Shaw Talebi: https://colab.research.google.com/drive/1AErkPgDderPW0dgE230OOjEysd0QV1sR?usp=sharing
-"""
+# Setting environment variables for cache directories
+os.environ["HF_HOME"] = base_cache_directory  # Sets the base cache directory for Hugging Face operations
+os.environ["TRANSFORMERS_CACHE"] = os.path.join(base_cache_directory, "transformers")
+os.environ["HF_DATASETS_CACHE"] = os.path.join(base_cache_directory, "datasets")
+
+
+
+# Now, your script continues as before, with the environment properly configured to use the specified cache directories.
+
 # -----------load the model (fine tuned Mistral)-----------------
 model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
+
 model = AutoModelForCausalLM.from_pretrained(model_name,
-                                             device_map="auto", # automatically figures out how to best use CPU + GPU for loading model
-                                             trust_remote_code=False, # prevents running custom model files on your machine
-                                             revision="main") # which version of model to use in repo
+                                             device_map="auto",  # This will automatically figure out the best use of CPU + GPU
+                                             trust_remote_code=False,  # Prevents running custom model files on your machine
+                                             revision="main")  # Specifies which version of the model to use
 
 # ------------Loading the Tokenizer-----------------------
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -85,7 +99,7 @@ data_collator = transformers.DataCollatorForLanguageModeling(tokenizer, mlm=Fals
 # ---------- Fine tuning ---------------
 # hyperparameters
 lr = 2e-4
-batch_size = 4
+batch_size = 32
 num_epochs = 10
 
 # define training arguments
