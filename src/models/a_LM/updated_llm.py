@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
 
     print("------- put on hf-------")
-    write_key = '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'
+    write_key = '...'# TODO: add hf key from https://huggingface.co/settings/tokens
     login(write_key)
 
     hf_name = 'nourijel' # your hf username or org name
