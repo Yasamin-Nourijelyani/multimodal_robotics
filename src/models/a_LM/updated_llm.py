@@ -158,4 +158,4 @@ if __name__ == "__main__":
     model.push_to_hub(model_id)
     trainer.push_to_hub(model_id)
 
-    
+
