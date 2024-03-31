@@ -18,8 +18,8 @@ def train():
     )
 
     train_loader, dataset = get_loader(
-        root_folder = "flickr8k/images",
-        annotation_file="flickr8k/captions.txt",
+        root_folder = "data/coord_text_images/images",
+        annotation_file="data/coord_text_images/captions.txt",
         transform=transform,
         num_workers = 2
     )
@@ -38,7 +38,7 @@ def train():
     learning_rate = 3e-4
     num_epochs = 100
 
-    writer = SummaryWriter("runs/flickr")
+    writer = SummaryWriter("results/flickr")
     step = 0
 
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)
