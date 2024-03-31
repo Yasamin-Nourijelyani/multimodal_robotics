@@ -1,90 +1,61 @@
-# https://github.com/luca-medeiros/lang-segment-anything/blob/main/lang_sam/utils.py
-
-import cv2
-import numpy as np
 import torch
-from PIL import Image
-from torchvision.utils import draw_bounding_boxes
-from torchvision.utils import draw_segmentation_masks
+import random
 
-MIN_AREA = 100
-
-
-def load_image(image_path: str):
-    return Image.open(image_path).convert("RGB")
+def save_checkpoint(checkpoint, filename):
+    torch.save(checkpoint, filename)
 
 
-def draw_image(image, masks, boxes, labels, alpha=0.4):
-    image = torch.from_numpy(image).permute(2, 0, 1)
-    if len(boxes) > 0:
-        image = draw_bounding_boxes(image, boxes, colors=['red'] * len(boxes), labels=labels, width=2)
-    if len(masks) > 0:
-        image = draw_segmentation_masks(image, masks=masks, colors=['cyan'] * len(masks), alpha=alpha)
-    return image.numpy().transpose(1, 2, 0)
+def load_checkpoint(checkpoint, model, optimizer):
+    model.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
+    step = checkpoint.get('step', 0)
+    return step
 
 
-def get_contours(mask):
-    if len(mask.shape) > 2:
-        mask = np.squeeze(mask, 0)
-    mask = mask.astype(np.uint8)
-    mask *= 255
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    effContours = []
-    for c in contours:
-        area = cv2.contourArea(c)
-        if area > MIN_AREA:
-            effContours.append(c)
-    return effContours
-
-
-def contour_to_points(contour):
-    pointsNum = len(contour)
-    contour = contour.reshape(pointsNum, -1).astype(np.float32)
-    points = [point.tolist() for point in contour]
-    return points
-
-
-def generate_labelme_json(binary_masks, labels, image_size, image_path=None):
-    """Generate a LabelMe format JSON file from binary mask tensor.
-
-    Args:
-        binary_masks: Binary mask tensor of shape [N, H, W].
-        labels: List of labels for each mask.
-        image_size: Tuple of (height, width) for the image size.
-        image_path: Path to the image file (optional).
-
-    Returns:
-        A dictionary representing the LabelMe JSON file.
+def generate_caption(image_tensor, model, vocab, max_length=50):
     """
-    num_masks = binary_masks.shape[0]
-    binary_masks = binary_masks.numpy()
+    Generate a caption for the given image tensor.
+    
+    Args:
+    - image_tensor: Tensor of shape (1, C, H, W) representing a preprocessed image.
+    - model: Trained captioning model.
+    - vocab: Vocabulary object with stoi (string to index) and itos (index to string) methods.
+    - max_length: Maximum length of the generated caption.
+    
+    Returns:
+    - A string representing the generated caption.
+    """
+    model.eval()  # Put model in evaluation mode
+    
+    # Start token
+    start_token = vocab.stoi["<SOS>"]
+    words = [start_token]
+    
+    with torch.no_grad():  # No need to track gradients
+        for _ in range(max_length):
+            captions_tensor = torch.LongTensor(words).unsqueeze(0).to(image_tensor.device)
+            predictions = model(image_tensor, captions_tensor)
+            
+            # Predict the next word token ID (with the highest probability)
+            predicted_id = predictions.argmax(1)[-1].item()
+            words.append(predicted_id)
+            
+            # End if <EOS> is generated
+            if predicted_id == vocab.stoi["<EOS>"]:
+                break
+    
+    # Convert word IDs back to strings
+    generated_caption = ' '.join([vocab.itos[idx] for idx in words[1:-1]])  # Skip <SOS> and <EOS> in the final caption
+    
+    return generated_caption
 
-    json_dict = {
-        "version": "4.5.6",
-        "imageHeight": image_size[0],
-        "imageWidth": image_size[1],
-        "imagePath": image_path,
-        "flags": {},
-        "shapes": [],
-        "imageData": None
-    }
 
-    # Loop through the masks and add them to the JSON dictionary
-    for i in range(num_masks):
-        mask = binary_masks[i]
-        label = labels[i]
-        effContours = get_contours(mask)
-
-        for effContour in effContours:
-            points = contour_to_points(effContour)
-            shape_dict = {
-                "label": label,
-                "line_color": None,
-                "fill_color": None,
-                "points": points,
-                "shape_type": "polygon"
-            }
-
-            json_dict["shapes"].append(shape_dict)
-
-    return json_dict
+def print_examples(model, device, dataset):
+    model.eval()
+    for _ in range(10):  # Print 10 examples
+        idx = random.randint(0, len(dataset)-1)
+        img, _ = dataset[idx]
+        img = img.unsqueeze(0).to(device)
+        caption = generate_caption(img, model, dataset.vocab)  
+        print(f"Generated caption: {caption}")
+    model.train()
