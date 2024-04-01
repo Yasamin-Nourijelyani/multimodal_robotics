@@ -43,7 +43,7 @@ if not os.path.exists(out_dir):
 block_metadata = []
 
 # Placeholder for text file content
-text_file_content = []
+text_file_content = ["image$caption"]
 
 for img_index in range(num_images):
       # Placeholder for block metadata
@@ -87,7 +87,7 @@ for img_index in range(num_images):
 
       # Append to text file content
     caption = f"{block_metadata}"
-    text_file_content.append(f"synthetic_image_{img_index + 1}.png,{caption}")
+    text_file_content.append(f"synthetic_image_{img_index + 1}.png${caption}")
 
     # Save image
     img_path = f"{out_dir}synthetic_image_{img_index + 1}.png"
