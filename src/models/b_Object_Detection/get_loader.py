@@ -67,7 +67,7 @@ class CoordDataset(Dataset):
     def __getitem__(self, index):
         caption = self.captions[index]
         img_id = self.imgs[index]
-        img = Image.open(os.path.join(self.root_dir, img_id).convert("RGB"))
+        img = Image.open(os.path.join(self.root_dir, img_id)).convert("RGB")
 
         if self.transform is not None:
             img = self.transform(img)
@@ -119,8 +119,8 @@ def main():
             transforms.ToTensor(),
         ]
     )
-    dataloader = get_loader("coord_text_images/images/", 
-                            annotation_file="coord_text_images/captions.txt", 
+    dataloader = get_loader("../../../data/coord_text_images/images/", 
+                            annotation_file="../../../data/coord_text_images/captions.txt", 
                             transform=transform)
     for idx, (imgs, captions) in enumerate(dataloader):
         print(imgs.shape)
