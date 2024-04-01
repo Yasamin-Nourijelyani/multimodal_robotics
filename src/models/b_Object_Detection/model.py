@@ -12,14 +12,21 @@ class EncoderCNN(nn.Module):
         self.dropout = nn.Dropout(0.5)
 
     def forward(self, images):
-        features = self.inception(images)
+        if self.training and self.inception.aux_logits:
+            features, aux_outputs = self.inception(images)
+        else:
+            features = self.inception(images)
+    
+        features = self.relu(features)
+        features = self.dropout(features)
 
         for name, param in self.inception.named_parameters():
             if "fc.weight" in name or "fc.bias" in name:
                 param.requires_grad = True
             else:
-                param.required_grad = self.train_CNN
-        return self.dropout(self.relu(features))
+                param.requires_grad = self.train_CNN
+                
+        return features
     
 class DecoderRNN(nn.Module):
     def __init__(self, embed_size, hidden_size, vocab_size, num_layers):
