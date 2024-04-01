@@ -7,7 +7,6 @@ from torch.utils.data import DataLoader, Dataset
 from PIL import Image
 import torchvision.transforms as transforms
 
-
 # python -m spacy download en
 spacy_eng = spacy.load("en_core_web_sm")
 class Vocabulary:

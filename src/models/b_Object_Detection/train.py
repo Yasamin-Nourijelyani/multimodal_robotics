@@ -18,8 +18,8 @@ def train():
     )
 
     train_loader, dataset = get_loader(
-        root_folder = "data/coord_text_images/images",
-        annotation_file="data/coord_text_images/captions.txt",
+        root_folder = "../../../data/coord_text_images/images",
+        annotation_file="../../../data/coord_text_images/captions.txt",
         transform=transform,
         num_workers = 2
     )
