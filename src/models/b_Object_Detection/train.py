@@ -6,6 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 from utils import save_checkpoint, load_checkpoint, print_examples
 from model import CNNtoRNN
 from get_loader import get_loader
+from tqdm import tqdm
 
 def train():
     transform = transforms.Compose(
@@ -53,6 +54,7 @@ def train():
     model.train()
 
     for epoch in range(num_epochs):
+        loop = tqdm(enumerate(train_loader), total=len(train_loader), leave=True)
         #print_examples(model, device, dataset)
         if save_model:
             checkpoint = {
@@ -63,7 +65,7 @@ def train():
             }
             save_checkpoint(checkpoint, "results/checkpoint.pth")
 
-        for idx, (imgs, captions) in enumerate(train_loader):
+        for idx, (imgs, captions) in loop:
             imgs = imgs.to(device)
             captions = captions.to(device)
 
@@ -76,6 +78,9 @@ def train():
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+            loop.set_description(f"Epoch [{epoch+1}/{num_epochs}]")
+            loop.set_postfix(loss=loss.item())
 
 
 if __name__ == "__main__":
