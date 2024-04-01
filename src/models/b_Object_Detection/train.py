@@ -39,7 +39,7 @@ def train():
     learning_rate = 3e-4
     num_epochs = 100
 
-    writer = SummaryWriter("results/flickr")
+    writer = SummaryWriter("results/CoordDataset")
     step = 0
 
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)

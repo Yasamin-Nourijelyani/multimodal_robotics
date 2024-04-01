@@ -29,13 +29,13 @@ colors = [
 ]
 
 # Define the number of images and blocks per image
-num_images = 1000
+num_images = 100
 blocks_per_image = 10
 block_size = 25
 block_depth = 10
 
 # Define output directory for images
-out_dir = 'images/'
+out_dir = 'coord_text_images/images/'
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
