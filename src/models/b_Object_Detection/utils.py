@@ -35,9 +35,8 @@ def generate_caption(image_tensor, model, vocab, max_length=50):
         for _ in range(max_length):
             captions_tensor = torch.LongTensor(words).unsqueeze(0).to(image_tensor.device)
             predictions = model(image_tensor, captions_tensor)
-            print("----------------", predictions.shape)
             # Predict the next word token ID (with the highest probability)
-            predicted_id = predictions.argmax(1)[-1].item()
+            predicted_id = predictions[-1, 0, :].argmax().item()
             words.append(predicted_id)
             
             # End if <EOS> is generated
