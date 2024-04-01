@@ -53,7 +53,7 @@ def train():
     model.train()
 
     for epoch in range(num_epochs):
-        print_examples(model, device, dataset)
+        #print_examples(model, device, dataset)
         if save_model:
             checkpoint = {
                 "state_dict": model.state_dict(),
