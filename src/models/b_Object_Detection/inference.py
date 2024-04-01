@@ -31,6 +31,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def load_trained_model(model_path, device):
+    vocab_size = 822
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)
     # Load the trained model weights
     checkpoint = torch.load(model_path, map_location=device)
