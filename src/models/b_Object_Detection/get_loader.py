@@ -110,7 +110,7 @@ def get_loader(
         pin_memory=pin_memory,
         collate_fn=MyCollate(pad_idx=pad_idx)
     )
-    return loader
+    return loader, dataset
 
 def main():
     transform = transforms.Compose(
