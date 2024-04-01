@@ -61,7 +61,7 @@ def train():
                 "step": step,
 
             }
-            save_checkpoint(checkpoint)
+            save_checkpoint(checkpoint, "results/checkpoint.pth")
 
         for idx, (imgs, captions) in enumerate(train_loader):
             imgs = imgs.to(device)
