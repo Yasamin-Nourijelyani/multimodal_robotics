@@ -10,7 +10,7 @@ from get_loader import get_loader
 def train():
     transform = transforms.Compose(
         [
-            transforms.Resize((356, 356)),
+            transforms.Resize((756, 660)),
             transforms.RandomCrop((299, 299)),
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
