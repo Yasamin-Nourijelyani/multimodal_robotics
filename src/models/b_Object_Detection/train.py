@@ -44,7 +44,7 @@ def train():
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)
 
     criterion = nn.CrossEntropyLoss(ignore_index=dataset.vocab.stoi["<PAD>"])
-    optimizer = optim.Adam(model.parameter(), lr=learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     if load_model:
 
