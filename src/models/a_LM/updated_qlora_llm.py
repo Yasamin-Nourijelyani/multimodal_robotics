@@ -66,8 +66,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     data_train = load_dataset("json", data_files=data_path_train)
     # tokenize training and validation datasets
     tokenized_data_train = data_train.map(tokenize_function, batched=True)
-    print(type(tokenized_data_train))
-    print(tokenized_data_train.keys())
+  
 
     data_path_test = "../../../data/train_test_data/test.jsonl"
     data_test = load_dataset("json", data_files=data_path_test)
@@ -106,8 +105,8 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # configure trainer
     trainer = transformers.Trainer(
         model=model,
-        train_dataset=tokenized_data_train,
-        eval_dataset=tokenized_data_test,
+        train_dataset=tokenized_data_train["train"],
+        eval_dataset=tokenized_data_test["test"],
         args=training_args,
         data_collator=data_collator
     )
