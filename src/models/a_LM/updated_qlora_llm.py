@@ -67,6 +67,9 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # # tokenize training and validation datasets
     # tokenized_data_train = data_train.map(tokenize_function, batched=True)
   
+    print(data)
+    print(len(data["train"]))
+    print(len(data["test"]))
 
     # data_path_test = "../../../data/train_test_data/test.jsonl"
     # data_test = load_dataset("json", data_files=data_path_test)
