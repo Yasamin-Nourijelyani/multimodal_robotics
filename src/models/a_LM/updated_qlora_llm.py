@@ -62,7 +62,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # ------------- load dataset ------------------------
 
     #data = load_dataset("nourijel/text_only")
-    data_path = "../../data/train_test_data/test.jsonl"
+    data_path = "../../../data/train_test_data/test.jsonl"
     data = load_dataset("json", data_files=data_path)
     # tokenize training and validation datasets
     tokenized_data = data.map(tokenize_function, batched=True)
