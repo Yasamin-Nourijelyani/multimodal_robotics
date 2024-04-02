@@ -13,6 +13,7 @@ Code is adapted from Shaw Talebi: https://colab.research.google.com/drive/1AErkP
 def tokenize_function(examples):
     # extract text and tokenize it
     text = examples["text"]
+    print(text)
 
     #tokenize and truncate text
     tokenizer.truncation_side = "left"
@@ -66,7 +67,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # data_train = load_dataset("json", data_files=data_path_train)
     # # tokenize training and validation datasets
     tokenized_data = data.map(tokenize_function, batched=True)
-    print(tokenized_data["test"]["text"])
+    #print(tokenized_data["test"]["text"])
   
 
 
