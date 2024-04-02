@@ -30,7 +30,7 @@ def tokenize_function(examples):
 
     # ---------- Fine tuning ---------------
 
-def fine_tune(output_dir, model, lr=2e-4, batch_size=32, num_epochs=10):    
+def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):    
     """Run to fine tune the TheBloke/Mistral-7B-Instruct-v0.2-GPTQ model"""
     
 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     # ------------Loading the Tokenizer-----------------------
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
-    model, trainer = fine_tune(output_dir, model, lr=2e-4, batch_size=32, num_epochs=10)
+    model, trainer = fine_tune(output_dir, model, lr=2e-4, batch_size=16, num_epochs=10)
 
 
     print("------- put on hf-------")
