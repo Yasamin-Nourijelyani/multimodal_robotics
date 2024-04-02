@@ -30,7 +30,7 @@ def tokenize_function(examples):
 
     # ---------- Fine tuning ---------------
 
-def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):    
+def fine_tune(output_dir, model, lr=2e-4, batch_size=32, num_epochs=10):    
     """Run to fine tune the TheBloke/Mistral-7B-Instruct-v0.2-GPTQ model"""
     
 
