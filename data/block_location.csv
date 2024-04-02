@@ -1,4 +1,4 @@
-img_config,block_id,x, y,color,v1,v2
+img_config,block_id,x,y,color,v1,v2
 1,A,291,544,yellow,1,0
 1,B,352,547,orange,0,0
 1,C,324,532,green,0,0

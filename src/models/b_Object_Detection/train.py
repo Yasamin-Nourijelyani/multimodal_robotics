@@ -5,8 +5,9 @@ import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from utils import save_checkpoint, load_checkpoint, print_examples
 from model import CNNtoRNN
-from get_loader import get_loader
+from get_loader import get_data_loaders, Vocabulary  
 from tqdm import tqdm
+from PIL import Image
 
 def train():
     transform = transforms.Compose(
@@ -18,12 +19,13 @@ def train():
         ]
     )
 
-    train_loader, dataset = get_loader(
-        root_folder = "../../../data/coord_text_images/images",
-        annotation_file="../../../data/coord_text_images/captions.txt",
-        transform=transform,
-        num_workers = 2
+    train_loader, _, train_dataset, _ = get_data_loaders(
+        train_annotations_file="../../../data/train_test_data/train_imgloc_caption.jsonl",
+        test_annotations_file="../../../data/train_test_data/test_imgloc_caption.jsonl",
+        root_folder="../../../data/coord_text_images_random/images",
+        transform=transform
     )
+    
 
     torch.backends.cudnn.benchmark = True
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -34,7 +36,7 @@ def train():
 
     embed_size = 256
     hidden_size = 256
-    vocab_size = len(dataset.vocab)
+    vocab_size = len(train_dataset.vocab)
     num_layers = 1
     learning_rate = 3e-4
     num_epochs = 100
@@ -44,7 +46,7 @@ def train():
 
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)
 
-    criterion = nn.CrossEntropyLoss(ignore_index=dataset.vocab.stoi["<PAD>"])
+    criterion = nn.CrossEntropyLoss(ignore_index=train_dataset.vocab.stoi["<PAD>"])
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     if load_model:
@@ -81,6 +83,9 @@ def train():
 
             loop.set_description(f"Epoch [{epoch+1}/{num_epochs}]")
             loop.set_postfix(loss=loss.item())
+
+
+
 
 
 if __name__ == "__main__":
