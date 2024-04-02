@@ -1,15 +1,9 @@
 # Object Detection model
 
-Identify and locate object in the image
+This model takes as input images and returns the text coordinates of all the blocks and their colors as captions. 
 
-- YOLO (You Only Look Once), SSD (Single Shot MultiDetector), Faster R-CNN
+to train run 
+```python3 train.py```
 
-# Vision Language Model
-
-Take the image and text input, and determine block corresponding to the text
-
-- Purpose is to set apart an object from visually similar objects
-
-- Action would be to pick up the identified object
-
-- CLIP: understand image in terms of prompt
+to do inference run:
+```python3 inference.py```

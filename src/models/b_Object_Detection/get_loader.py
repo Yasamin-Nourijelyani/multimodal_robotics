@@ -6,6 +6,7 @@ from torch.nn.utils.rnn import pad_sequence # to pad the batch
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
 import torchvision.transforms as transforms
+import json
 
 # python -m spacy download en
 spacy_eng = spacy.load("en_core_web_sm")
@@ -49,17 +50,29 @@ class Vocabulary:
 
 
 class CoordDataset(Dataset):
-    def __init__(self, root_dir, captions_file, transform=None, freq_threshold=5):
+    def __init__(self, root_dir, captions_file, vocab: Vocabulary, transform=None, freq_threshold=5):
         self.root_dir = root_dir
-        self.df = pd.read_csv(captions_file, delimiter='$')
+        self.df = self.load_annotations_file(captions_file)
         self.transform = transform
 
-        self.imgs = self.df["image"]
+        self.imgs = self.df["image_path"]
         self.captions = self.df["caption"]
 
         # init vocab and build
-        self.vocab = Vocabulary(freq_threshold)
+        self.vocab = vocab
         self.vocab.build_vocabulary(self.captions.tolist())
+
+    def load_annotations_file(self, annotations_file):
+        data = {
+            'image_path': [],
+            'caption': []
+        }
+        with open(annotations_file, 'r') as f:
+            for line in f:
+                entry = json.loads(line)
+                data['image_path'].append(entry['image_path'])
+                data['caption'].append(entry['caption'])
+        return pd.DataFrame(data)
 
     def __len__(self):
         return len(self.df)
@@ -90,27 +103,50 @@ class MyCollate:
 
         return imgs, targets
     
-def get_loader(
-        root_folder, 
-        annotation_file,
-        transform,
-        batch_size=32,
-        num_workers=8,
-        shuffle=True,
-        pin_memory=True,
-):
-    dataset = CoordDataset(root_folder, annotation_file, transform=transform)
-    pad_idx = dataset.vocab.stoi["<PAD>"]
 
-    loader = DataLoader(
-        dataset=dataset,
+# only 1 vocab for training and test data
+def build_vocab_from_training_data(train_annotation_file, freq_threshold=5):
+    # load captions
+    train_df = pd.read_json(train_annotation_file, lines=True)
+    captions = train_df["caption"].tolist()
+    
+    # build vocabulary
+    vocab = Vocabulary(freq_threshold)
+    vocab.build_vocabulary(captions)
+    
+    return vocab
+
+
+
+def get_data_loaders(train_annotations_file, test_annotations_file, root_folder, transform, batch_size=32, num_workers=4, shuffle=True, pin_memory=True):
+
+    vocab = build_vocab_from_training_data(train_annotations_file)
+
+    train_dataset = CoordDataset(root_folder, train_annotations_file, vocab, transform=transform)
+    test_dataset = CoordDataset(root_folder, test_annotations_file, vocab, transform=transform)
+
+
+    train_loader = DataLoader(
+        train_dataset,
         batch_size=batch_size,
         num_workers=num_workers,
         shuffle=shuffle,
         pin_memory=pin_memory,
-        collate_fn=MyCollate(pad_idx=pad_idx)
+        collate_fn=MyCollate(pad_idx=vocab.stoi["<PAD>"])
     )
-    return loader, dataset
+
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        shuffle=False,
+        pin_memory=pin_memory,
+        collate_fn=MyCollate(pad_idx=vocab.stoi["<PAD>"])
+    )
+    
+    return train_loader, test_loader, train_dataset, test_dataset
+
+
 
 def main():
     transform = transforms.Compose(
@@ -119,12 +155,12 @@ def main():
             transforms.ToTensor(),
         ]
     )
-    dataloader = get_loader("../../../data/coord_text_images/images/", 
-                            annotation_file="../../../data/coord_text_images/captions.txt", 
-                            transform=transform)
-    for idx, (imgs, captions) in enumerate(dataloader):
-        print(imgs.shape)
-        print(captions.shape)
+    train_loader, test_loader, train_dataset, test_dataset = get_data_loaders(
+        train_annotations_file="../../../data/train_test_data/train_imgloc_caption.jsonl",
+        test_annotations_file="../../../data/train_test_data/test_imgloc_caption.jsonl",
+        root_folder="../../../data/coord_text_images_random/images",
+        transform=transform
+    )
 
 if __name__ == "__main__":
     main()
