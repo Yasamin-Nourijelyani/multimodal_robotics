@@ -106,7 +106,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     trainer = transformers.Trainer(
         model=model,
         train_dataset=tokenized_data_train["train"],
-        eval_dataset=tokenized_data_test["test"],
+        eval_dataset=tokenized_data_test["train"],
         args=training_args,
         data_collator=data_collator
     )
