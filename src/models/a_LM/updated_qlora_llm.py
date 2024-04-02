@@ -21,7 +21,7 @@ def tokenize_function(examples):
         text,
         return_tensors="np",
         truncation=True,
-        max_length=512
+        max_length=200
     )
 
     return tokenized_inputs
