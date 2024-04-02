@@ -66,7 +66,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # data_train = load_dataset("json", data_files=data_path_train)
     # # tokenize training and validation datasets
     tokenized_data = data.map(tokenize_function, batched=True)
-    print(tokenized_data["test"])
+    print(tokenized_data["test"]["text"])
   
 
 
