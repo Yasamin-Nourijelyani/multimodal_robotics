@@ -62,7 +62,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
 
     # ------------- load dataset ------------------------
 
-    data = load_dataset("nourijel/robotics_perception_text")
+    data = load_dataset("shawhin/shawgpt-youtube-comments")
     # data_path_train = "../../../data/train_test_data/train.jsonl"
     # data_train = load_dataset("json", data_files=data_path_train)
     # # tokenize training and validation datasets
