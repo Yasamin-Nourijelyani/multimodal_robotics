@@ -61,17 +61,17 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
 
     # ------------- load dataset ------------------------
 
-    #data = load_dataset("nourijel/text_only")
-    data_path_train = "../../../data/train_test_data/train.jsonl"
-    data_train = load_dataset("json", data_files=data_path_train)
-    # tokenize training and validation datasets
-    tokenized_data_train = data_train.map(tokenize_function, batched=True)
+    data = load_dataset("nourijel/robotics_perception_text")
+    # data_path_train = "../../../data/train_test_data/train.jsonl"
+    # data_train = load_dataset("json", data_files=data_path_train)
+    # # tokenize training and validation datasets
+    # tokenized_data_train = data_train.map(tokenize_function, batched=True)
   
 
-    data_path_test = "../../../data/train_test_data/test.jsonl"
-    data_test = load_dataset("json", data_files=data_path_test)
-    # tokenize training and validation datasets
-    tokenized_data_test = data_test.map(tokenize_function, batched=True)
+    # data_path_test = "../../../data/train_test_data/test.jsonl"
+    # data_test = load_dataset("json", data_files=data_path_test)
+    # # tokenize training and validation datasets
+    # tokenized_data_test = data_test.map(tokenize_function, batched=True)
 
 
     # setting pad token
@@ -105,8 +105,8 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
     # configure trainer
     trainer = transformers.Trainer(
         model=model,
-        train_dataset=tokenized_data_train["train"],
-        eval_dataset=tokenized_data_test["train"],
+        train_dataset=data["train"],
+        eval_dataset=data["test"],
         args=training_args,
         data_collator=data_collator
     )
