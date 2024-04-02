@@ -12,7 +12,7 @@ Code is adapted from Shaw Talebi: https://colab.research.google.com/drive/1AErkP
 # create tokenize function
 def tokenize_function(examples):
     # extract text and tokenize it
-    text = examples["text"]
+    text = examples["example"]
     print(text)
 
     #tokenize and truncate text
