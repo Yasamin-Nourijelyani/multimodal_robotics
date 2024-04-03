@@ -4,7 +4,7 @@ Fine Tuned Mistral 7b model that takes instruction and coordinate description of
 object that the instruction aims the model to perceive. 
 
 to train run:
-```python3 updated_qlora_llm.py```
+```python3 finetune_qlora_llm.py```
 
 for inference run:
 ```inference.py```
