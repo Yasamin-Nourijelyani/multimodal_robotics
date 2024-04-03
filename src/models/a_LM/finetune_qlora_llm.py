@@ -15,6 +15,7 @@ from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 from datasets import load_dataset
 import transformers
+from huggingface_hub import login
 
 
 
@@ -130,3 +131,12 @@ trainer.train()
 
 # renable warnings
 model.config.use_cache = True
+
+write_key = ' ' # TODO: paste token here from https://huggingface.co/settings/tokens
+login(write_key)
+
+hf_name = 'nourijel' # your hf username or org name
+model_id = hf_name + "/" + "robotics_finetuned_text_perception"
+
+model.push_to_hub(model_id)
+trainer.push_to_hub(model_id)
