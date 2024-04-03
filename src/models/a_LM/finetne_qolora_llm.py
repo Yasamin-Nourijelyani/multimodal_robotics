@@ -97,7 +97,7 @@ num_epochs = 10
 
 # define training arguments
 training_args = transformers.TrainingArguments(
-    output_dir= "shawgpt-ft",
+    output_dir= "robotics_finetuned_text_perception",
     learning_rate=lr,
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size,
