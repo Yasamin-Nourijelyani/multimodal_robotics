@@ -17,25 +17,16 @@ from peft import LoraConfig, get_peft_model
 from datasets import load_dataset
 import transformers
 
-# Set the base directory for all Hugging Face caches
-base_cache_directory = "/w/331/yasamin/.cache/huggingface"
-
-# Setting environment variables for cache directories
-os.environ["HF_HOME"] = base_cache_directory  # Sets the base cache directory for Hugging Face operations
-os.environ["TRANSFORMERS_CACHE"] = os.path.join(base_cache_directory, "transformers")
-os.environ["HF_DATASETS_CACHE"] = os.path.join(base_cache_directory, "datasets")
-
 
 
 # Now, your script continues as before, with the environment properly configured to use the specified cache directories.
 
 # -----------load the model (fine tuned Mistral)-----------------
 model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
-
 model = AutoModelForCausalLM.from_pretrained(model_name,
-                                             device_map="auto",  # This will automatically figure out the best use of CPU + GPU
-                                             trust_remote_code=False,  # Prevents running custom model files on your machine
-                                             revision="main")  # Specifies which version of the model to use
+                                             device_map="auto", # automatically figures out how to best use CPU + GPU for loading model
+                                             trust_remote_code=False, # prevents running custom model files on your machine
+                                             revision="main") # which version of model to use in repo
 
 # ------------Loading the Tokenizer-----------------------
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -68,7 +59,7 @@ model.print_trainable_parameters()
 
 # ------------- load dataset ------------------------
 
-data = load_dataset("nourijel/robotics_perception_text")
+data = load_dataset("nourijel/text_only")
 
 # --------Tokenize function---------------
 
@@ -99,7 +90,7 @@ data_collator = transformers.DataCollatorForLanguageModeling(tokenizer, mlm=Fals
 # ---------- Fine tuning ---------------
 # hyperparameters
 lr = 2e-4
-batch_size = 32
+batch_size = 4
 num_epochs = 10
 
 # define training arguments

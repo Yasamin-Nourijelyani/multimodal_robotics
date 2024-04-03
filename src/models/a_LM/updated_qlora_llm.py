@@ -21,7 +21,7 @@ def tokenize_function(examples):
         text,
         return_tensors="np",
         truncation=True,
-        max_length=200
+        max_length=512
     )
 
     return tokenized_inputs
@@ -62,7 +62,7 @@ def fine_tune(output_dir, model, lr=2e-4, batch_size=64, num_epochs=10):
 
     # ------------- load dataset ------------------------
 
-    data = load_dataset("nourijel/robotics_perception_text")
+    data = load_dataset("nourijel/text_only")
     # data_path_train = "../../../data/train_test_data/train.jsonl"
     # data_train = load_dataset("json", data_files=data_path_train)
     # # tokenize training and validation datasets
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     # ------------Loading the Tokenizer-----------------------
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
-    model, trainer = fine_tune(output_dir, model, lr=2e-4, batch_size=16, num_epochs=10)
+    model, trainer = fine_tune(output_dir, model, lr=2e-4, batch_size=32, num_epochs=10)
 
 
     print("------- put on hf-------")
