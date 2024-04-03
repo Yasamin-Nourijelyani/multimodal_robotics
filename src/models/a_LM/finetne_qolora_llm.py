@@ -10,7 +10,6 @@
 Code is adapted from Shaw Talebi: https://colab.research.google.com/drive/1AErkPgDderPW0dgE230OOjEysd0QV1sR?usp=sharing
 """
 
-import os
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
@@ -30,7 +29,6 @@ model = AutoModelForCausalLM.from_pretrained(model_name,
 
 # ------------Loading the Tokenizer-----------------------
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-
 # -----------Preparing model for training--------------------------
 
 model.train() # model in training mode (dropout modules are activated)
@@ -42,6 +40,7 @@ model.gradient_checkpointing_enable()
 model = prepare_model_for_kbit_training(model)
 
 #----------------- LoRA config----------------------
+# LoRA config
 config = LoraConfig(
     r=8,
     lora_alpha=32,
@@ -59,6 +58,7 @@ model.print_trainable_parameters()
 
 # ------------- load dataset ------------------------
 
+# load dataset
 data = load_dataset("nourijel/text_only")
 
 # --------Tokenize function---------------
@@ -82,6 +82,7 @@ def tokenize_function(examples):
 # tokenize training and validation datasets
 tokenized_data = data.map(tokenize_function, batched=True)
 
+
 # setting pad token
 tokenizer.pad_token = tokenizer.eos_token
 # data collator
@@ -89,13 +90,14 @@ data_collator = transformers.DataCollatorForLanguageModeling(tokenizer, mlm=Fals
 
 # ---------- Fine tuning ---------------
 # hyperparameters
+# hyperparameters
 lr = 2e-4
-batch_size = 4
+batch_size = 32
 num_epochs = 10
 
 # define training arguments
 training_args = transformers.TrainingArguments(
-    output_dir= "robotics_finetuned_text_perception",
+    output_dir= "shawgpt-ft",
     learning_rate=lr,
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size,
@@ -123,7 +125,7 @@ trainer = transformers.Trainer(
 
 
 # train model
-model.config.use_cache = False  # silence the warnings. re-enable for inference
+model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
 trainer.train()
 
 # renable warnings
