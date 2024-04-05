@@ -31,15 +31,12 @@ def generate_caption(image_tensor, model, device, vocab):
     image_tensor = image_tensor.to(device)
     feature = model.encoderCNN(image_tensor)
     captions = model.caption_image(feature, vocab)
-    vocab_size = len(vocab.stoi)
-    print(f"Vocabulary Size_______: {vocab_size}")
-    print(f"Vocabulary Keys_______: {vocab.stoi.keys()}")
-    print(f"Vocabulary _______: {vocab.stoi}")
+    print(f"Vocabulary Keys_______: {vocab.stoi}")
+    print(f"Vocabulary _______: {vocab.itos}")
 
+    filtered_indices = [idx for idx in captions if idx not in (vocab.stoi.get("<SOS>", -1), vocab.stoi.get("<EOS>", -1), vocab.stoi.get("<PAD>", -1))]
+    sentence = ' '.join([vocab.itos.get(idx, "<UNK>") for idx in filtered_indices])
 
-
-
-    sentence = ' '.join([vocab.itos[idx] for idx in captions if idx not in (vocab.stoi["<SOS>"], vocab.stoi["<EOS>"], vocab.stoi["<PAD>"])])
     return sentence
 
 def main():
