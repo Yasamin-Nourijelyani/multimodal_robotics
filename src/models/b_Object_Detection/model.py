@@ -58,14 +58,13 @@ class CNNtoRNN(nn.Module):
 
         with torch.no_grad():
             x = image
-            print("SHAPE__________", image.shape)
             states = None
 
             for _ in range(max_length):
                 hiddens, states = self.decoderRNN.lstm(x, states)
                 output = self.decoderRNN.linear(hiddens.squeeze(0))
-                predicted = output.argmax(1)
-
+                print("SHAPE______________", output.shape)
+                predicted = output.argmax()
                 result_caption.append(predicted.item())
                 x = self.decoderRNN.embed(predicted).unsqueeze(0)
 
