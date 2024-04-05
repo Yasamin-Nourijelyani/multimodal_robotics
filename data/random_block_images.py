@@ -27,14 +27,16 @@ colors = [
     ((0, 128, 0), 'green')
 ]
 
-num_images = 1000
+num_images = 10000
 blocks_per_image = 10
 block_size = 25
 block_depth = 10
 
-out_dir = 'coord_text_images_random/images/'
-if not os.path.exists(out_dir):
-    os.makedirs(out_dir)
+out_dir_images = 'coord_text_images_random/images/'
+out_dir_caption = 'coord_text_images_random/'
+
+if not os.path.exists(out_dir_images):
+    os.makedirs(out_dir_images)
 
 block_metadata = []
 
@@ -72,10 +74,10 @@ for img_index in range(num_images):
     caption = f"{block_metadata}"
     text_file_content.append(f"synthetic_image_{img_index + 1}.png${caption}")
 
-    img_path = f"{out_dir}synthetic_image_{img_index + 1}.png"
+    img_path = f"{out_dir_images}synthetic_image_{img_index + 1}.png"
     img.save(img_path)
 
-text_file_path = f"{out_dir}captions.txt"
+text_file_path = f"{out_dir_caption}captions.txt"
 with open(text_file_path, 'w') as f:
     for line in text_file_content:
         f.write(line + "\n")
@@ -93,7 +95,7 @@ with open(path, 'r') as f:
     next(f)  # Skip the header line
     for line in f:
         image_path, caption = line.strip().split('$', 1)
-        img_pth_full = out_dir + image_path
+        img_pth_full = out_dir_images + image_path
         data['image_path'].append(img_pth_full)
         data['caption'].append(caption)
 df = pd.DataFrame(data)
