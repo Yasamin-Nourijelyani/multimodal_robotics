@@ -28,7 +28,7 @@ def transform_image(image_path):
 
 def generate_caption(image_path, model, device, vocab):
     model.eval() 
-    image_tensor = transform_image(image_path).to(device)
+    image_tensor = image_tensor.to(device)
     feature = model.cnn(image_tensor)
     sampled_ids = model.rnn.sample(feature)
     sampled_ids = sampled_ids[0].cpu().numpy()  
@@ -69,10 +69,10 @@ def main():
     model = load_model(device, checkpoint_path, vocab_size)
   
     captions = []
-    for image_paths, _ in test_loader:
-        for image_path in image_paths:
-            caption = generate_caption(image_path, model, device, vocab)
-            captions.append((image_path, caption))
+    for imgs, _ in test_loader:
+        for img_tensor in imgs:
+            caption = generate_caption(img_tensor.unsqueeze(0), model, device, vocab)  #  image passed in tensor directly
+            captions.append(caption)
     print("done")
     return captions
 
