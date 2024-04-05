@@ -74,4 +74,5 @@ def main():
     return captions
 
 if __name__ == "__main__":
-    main()
+    captions = main()
+    print(captions)
