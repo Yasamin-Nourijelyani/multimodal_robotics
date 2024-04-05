@@ -8,8 +8,11 @@ from get_loader import get_data_loaders, Vocabulary
 
 def load_model(device, checkpoint_path, vocab_size, embed_size=256, hidden_size=256, num_layers=1):
     model = CNNtoRNN(embed_size, hidden_size, vocab_size, num_layers).to(device)
+    optimizer = torch.optim.Adam(model.parameters())
     checkpoint = torch.load(checkpoint_path, map_location=device)
-    model.load_state_dict(checkpoint['model'])
+    model.load_state_dict(checkpoint['state_dict'])
+    if 'optimize' in checkpoint:  
+        optimizer.load_state_dict(checkpoint['optimize'])
     model.eval()
     return model
 
