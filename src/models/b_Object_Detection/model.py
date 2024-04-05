@@ -63,7 +63,6 @@ class CNNtoRNN(nn.Module):
             for _ in range(max_length):
                 hiddens, states = self.decoderRNN.lstm(x, states)
                 output = self.decoderRNN.linear(hiddens.squeeze(0))
-                print("SHAPE______________", output.shape)
                 predicted = output.argmax()
                 result_caption.append(predicted.item())
                 x = self.decoderRNN.embed(predicted).unsqueeze(0)

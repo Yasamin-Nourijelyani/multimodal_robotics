@@ -31,7 +31,7 @@ def generate_caption(image_tensor, model, device, vocab):
     image_tensor = image_tensor.to(device)
     feature = model.encoderCNN(image_tensor)
     captions = model.caption_image(feature, vocab)
-    sentence = ' '.join([vocab.itos[idx] for idx in captions if idx not in (vocab.stoi['<SOS>'], vocab.stoi['<EOS>'], vocab.stoi['<PAD>'])])
+    sentence = ' '.join([vocab.itos[idx] for idx in captions if idx not in (vocab.stoi["<SOS>"], vocab.stoi["<EOS>"], vocab.stoi["<PAD>"])])
     return sentence
 
 def main():
