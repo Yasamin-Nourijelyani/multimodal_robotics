@@ -26,21 +26,12 @@ def transform_image(image_path):
     image = Image.open(image_path).convert("RGB")
     return transform(image).unsqueeze(0)  # add batch dimension
 
-def generate_caption(image_path, model, device, vocab):
+def generate_caption(image_tensor, model, device, vocab):
     model.eval() 
     image_tensor = image_tensor.to(device)
-    feature = model.cnn(image_tensor)
-    sampled_ids = model.rnn.sample(feature)
-    sampled_ids = sampled_ids[0].cpu().numpy()  
-    
-    # IDs to words
-    sampled_caption = []
-    for word_id in sampled_ids:
-        word = vocab.itos[word_id]
-        sampled_caption.append(word)
-        if word == "<EOS>":
-            break
-    sentence = ' '.join(sampled_caption[1:-1])  #skipping <SOS> and <EOS>
+    feature = model.encoderCNN(image_tensor)
+    captions = model.caption_image(feature, vocab)
+    sentence = ' '.join([vocab.itos[idx] for idx in captions if idx not in (vocab.stoi['<SOS>'], vocab.stoi['<EOS>'], vocab.stoi['<PAD>'])])
     return sentence
 
 def main():
