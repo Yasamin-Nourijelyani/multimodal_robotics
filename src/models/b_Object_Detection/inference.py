@@ -32,7 +32,6 @@ def generate_caption(image_tensor, model, device, vocab):
     feature = model.encoderCNN(image_tensor)
     captions = model.caption_image(feature, vocab)
 
-
     filtered_indices = [idx for idx in captions if idx not in (vocab.stoi.get("<SOS>", -1), vocab.stoi.get("<EOS>", -1), vocab.stoi.get("<PAD>", -1))]
     sentence = ' '.join([vocab.itos.get(idx, "<UNK>") for idx in filtered_indices])
 
@@ -51,20 +50,20 @@ def main():
         ]
     )
 
-    _, test_loader, _, test_dataset = get_data_loaders(
+    train_loader, test_loader, train_dataset, test_dataset = get_data_loaders(
         train_annotations_file="../../../data/train_test_data/train_imgloc_caption.jsonl",
         test_annotations_file="../../../data/train_test_data/test_imgloc_caption.jsonl",
         root_folder="../../../data",
         transform=transform
     )
-    vocab = test_dataset.vocab
+    vocab = train_dataset.vocab
     vocab_size = len(vocab)
     checkpoint_path = "results/checkpoint.pth"
     
     model = load_model(device, checkpoint_path, vocab_size)
   
     captions = []
-    for imgs, _ in test_loader:
+    for imgs, _ in train_loader:
         for img_tensor in imgs:
             caption = generate_caption(img_tensor.unsqueeze(0), model, device, vocab)  #  image passed in tensor directly
             captions.append(caption)
