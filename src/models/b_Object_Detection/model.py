@@ -57,7 +57,8 @@ class CNNtoRNN(nn.Module):
         result_caption = []
 
         with torch.no_grad():
-            x = self.encoderCNN(image).unsqueeze(0)
+            x = image
+            print("SHAPE__________", image.shape)
             states = None
 
             for _ in range(max_length):
