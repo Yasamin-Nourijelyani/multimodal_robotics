@@ -22,7 +22,7 @@ def train():
         ]
     )
 
-    train_loader, _, train_dataset, _ = get_data_loaders(
+    train_loader, test_loader, train_dataset, test_dataset = get_data_loaders(
         train_annotations_file="../../../data/train_imgloc_caption.jsonl",
         test_annotations_file="../../../data/test_imgloc_caption.jsonl",
         root_folder="../../../data",
@@ -66,7 +66,7 @@ def train():
                 "state_dict": model.state_dict(),
                 "optimize": optimizer.state_dict(),
                 "step": step,
-                 "vocab": train_dataset.vocab.stoi,
+                "vocab": train_dataset.vocab.stoi,
 
             }
             save_checkpoint(checkpoint, "results/checkpoint.pth")
@@ -87,6 +87,25 @@ def train():
 
             loop.set_description(f"Epoch [{epoch+1}/{num_epochs}]")
             loop.set_postfix(loss=loss.item())
+
+        model.eval()
+        with torch.no_grad():
+            total_loss = 0
+            total_samples = 0
+            for imgs, captions in test_loader:
+                imgs = imgs.to(device)
+                captions = captions.to(device)
+
+                outputs = model(imgs, captions[:-1])
+                loss = criterion(outputs.reshape(-1, outputs.shape[2]), captions.reshape(-1))
+                total_loss += loss.item() * imgs.size(0)
+                total_samples += imgs.size(0)
+
+            avg_loss = total_loss / total_samples
+            writer.add_scalar("Validation loss", avg_loss, global_step=step)
+            print(f"Validation Loss after epoch {epoch+1}: {avg_loss}")
+
+        model.train()
 
 
 
