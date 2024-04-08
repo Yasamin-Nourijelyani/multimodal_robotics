@@ -8,8 +8,11 @@ from model import CNNtoRNN
 from get_loader import get_data_loaders, Vocabulary  
 from tqdm import tqdm
 from PIL import Image
+import wandb
 
 def train():
+
+   
     transform = transforms.Compose(
         [
             transforms.Resize((756, 660)),
@@ -39,7 +42,7 @@ def train():
     vocab_size = len(train_dataset.vocab)
     num_layers = 1
     learning_rate = 3e-4
-    num_epochs = 100
+    num_epochs = 20
 
     writer = SummaryWriter("results/CoordDataset")
     step = 0
@@ -63,6 +66,7 @@ def train():
                 "state_dict": model.state_dict(),
                 "optimize": optimizer.state_dict(),
                 "step": step,
+                 "vocab": train_dataset.vocab.stoi,
 
             }
             save_checkpoint(checkpoint, "results/checkpoint.pth")

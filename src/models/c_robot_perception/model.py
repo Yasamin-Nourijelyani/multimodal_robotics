@@ -7,6 +7,18 @@ import re
 import ast
 
 
+def load_model_and_vocab(device, checkpoint_path):
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    stoi = checkpoint['vocab']
+    vocab = Vocabulary()
+    vocab.stoi = stoi
+    vocab.itos = {v: k for k, v in stoi.items()}
+    
+    model = CNNtoRNN(embed_size=256, hidden_size=256, vocab_size=len(vocab), num_layers=1).to(device)
+    model.load_state_dict(checkpoint['state_dict'])
+
+    return vocab, model
+
 def transform_image(image_path):
     transform = transforms.Compose([
         transforms.Resize((756, 660)),
@@ -19,9 +31,11 @@ def transform_image(image_path):
     return image_tensor
 
 def main(image_path):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    vocab, model = load_your_model_and_vocab_somehow(device)  
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    checkpoint_path = "results/checkpoint.pth"
+
+    vocab, model = load_model_and_vocab(device, checkpoint_path)  
     image_tensor = transform_image(image_path)
     
     caption = generate_caption(image_tensor, model, device, vocab)
@@ -38,8 +52,7 @@ def main(image_path):
 
     prompt_template = lambda comment: f'''[INST] {intstructions_string} \n{comment} \n[/INST]'''
 
-    comment = "Image description: [{'name': 'blue', 'keypoint': {'x': 296, 'y': 552}}, {'name': 'yellow', 'keypoint': {'x': 331, 'y': 551}}, {'name': 'green', 'keypoint': {'x': 336, 'y': 512}}, {'name': 'orange', 'keypoint': {'x': 323, 'y': 485}}, {'name': 'blue', 'keypoint': {'x': 310, 'y': 454}}, {'name': 'yellow', 'keypoint': {'x': 352, 'y': 469}}, {'name': 'blue', 'keypoint': {'x': 395, 'y': 518}}, {'name': 'yellow', 'keypoint': {'x': 420, 'y': 548}}, {'name': 'orange', 'keypoint': {'x': 428, 'y': 444}}, {'name': 'blue', 'keypoint': {'x': 430, 'y': 486}}, {'name': 'blue', 'keypoint': {'x': 459, 'y': 457}}, {'name': 'blue', 'keypoint': {'x': 496, 'y': 459}}, {'name': 'yellow', 'keypoint': {'x': 481, 'y': 480}}, {'name': 'green', 'keypoint': {'x': 484, 'y': 500}}, {'name': 'green', 'keypoint': {'x': 498, 'y': 546}}]"
-    prompt = prompt_template(comment)
+    prompt = prompt_template(caption)
 
     inputs = tokenizer(prompt, return_tensors="pt")
     outputs = lm_model.generate(input_ids=inputs["input_ids"].to(device), max_new_tokens=280)
@@ -51,5 +64,5 @@ def main(image_path):
 
 
 if __name__ == "__main__":
-    image_path = "../../../data/coord_text_images_random/images/synthetic_image_1.png"
+    image_path = "../../../data/coord_text_images_non_random/images/synthetic_image_1.png"
     main(image_path)
