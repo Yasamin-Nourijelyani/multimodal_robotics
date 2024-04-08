@@ -51,8 +51,8 @@ def main():
     )
 
     train_loader, test_loader, train_dataset, test_dataset = get_data_loaders(
-        train_annotations_file="../../../data/train_test_data/train_imgloc_caption.jsonl",
-        test_annotations_file="../../../data/train_test_data/test_imgloc_caption.jsonl",
+        train_annotations_file="../../../data/train_imgloc_caption.jsonl",
+        test_annotations_file="../../../data/test_imgloc_caption.jsonl",
         root_folder="../../../data",
         transform=transform
     )

@@ -5,6 +5,8 @@ from datasets import load_dataset
 import transformers
 import re 
 import ast
+from peft import PeftModel, PeftConfig
+from transformers import AutoModelForCausalLM
 
 model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
 model = AutoModelForCausalLM.from_pretrained(model_name,
@@ -60,8 +62,7 @@ print("___________Fine tuned________________")
 
 
 # load model from hub
-from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM
+
 
 model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
 model = AutoModelForCausalLM.from_pretrained(model_name,
