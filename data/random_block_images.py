@@ -27,7 +27,7 @@ colors = [
     ((0, 128, 0), 'green')
 ]
 
-num_images = 10000
+num_images = 10
 blocks_per_image = 10
 block_size = 25
 block_depth = 10
@@ -90,8 +90,7 @@ data = {
     'image_path': [],
     'caption': []
 }
-path = "coord_text_images_random/captions.txt"
-with open(path, 'r') as f:
+with open(text_file_path, 'r') as f:
     next(f)  # Skip the header line
     for line in f:
         image_path, caption = line.strip().split('$', 1)
