@@ -124,23 +124,22 @@ def create_json():
 # df to use for training/testing
 def create_df(read_file_path, write_file_path):
 
-    with open(read_file_path, 'r') as file:
-        data = json.load(file)
-
     rows = []
-    for item in data:
-        image_path = item["image_path"]
-        id_ = int(image_path.split('synthetic_image_')[-1].split('.png')[0])  
-        captions = json.loads(item["caption"].replace("'", "\""))  
-        for caption in captions:
-            row = {
-                "id": id_,
-                "names": caption["name"],
-                "x": caption["keypoint"]["x"],
-                "y": caption["keypoint"]["y"],
-                "img_path": image_path
-            }
-            rows.append(row)
+    with open(read_file_path, 'r') as file:
+        for line in file: 
+            item = json.loads(line) 
+            image_path = item["image_path"]
+            id_ = int(image_path.split('synthetic_image_')[-1].split('.png')[0])
+            captions = json.loads(item["caption"].replace("'", "\""))
+            for caption in captions:
+                row = {
+                    "id": id_,
+                    "names": caption["name"],
+                    "x": caption["keypoint"]["x"],
+                    "y": caption["keypoint"]["y"],
+                    "img_path": image_path
+                }
+                rows.append(row)
 
     df = pd.DataFrame(rows)
 
