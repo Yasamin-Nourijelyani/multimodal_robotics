@@ -85,7 +85,7 @@ class KeypointTokenizer:
         return x.astype('float32') / (self.num_bins - 1)
 
     def __call__(self, labels: list, keypoints: list):
-        assert len(labels) == len(keypoints) // 2, "Each label should correspond to a pair of keypoints (x, y)"
+        assert len(labels) == len(keypoints), "Each label should correspond to a pair of keypoints (x, y)"
         
         keypoints = np.array(keypoints).reshape(-1, 2)  
         labels = np.array(labels)
