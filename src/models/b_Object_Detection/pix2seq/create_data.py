@@ -92,7 +92,8 @@ def create_json():
         caption = f"{block_metadata}"
         text_file_content.append(f"synthetic_image_{img_index + 1}.png${caption}")
 
-        img = img.resize(target_size, Image.ANTIALIAS)
+        img = img.resize(target_size, Image.Resampling.LANCZOS)
+
 
         img_path = f"{out_dir_images}synthetic_image_{img_index + 1}.png"
 
