@@ -28,10 +28,11 @@ def get_transform_valid():
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
 
 class KeypointDataset(Dataset):
-    def __init__(self, df, transforms=None):
+    def __init__(self, df, transforms=None, tokenizer=None):
         self.ids = df['id'].unique()
         self.df = df
         self.transforms = transforms
+        self.tokenizer = tokenizer
 
     def __getitem__(self, idx):
         sample = self.df[self.df['id'] == self.ids[idx]]
@@ -49,6 +50,11 @@ class KeypointDataset(Dataset):
 
         img = torch.FloatTensor(img).permute(2, 0, 1)
         keypoints = torch.FloatTensor(keypoints)
+
+        if self.tokenizer is not None:
+            seqs = self.tokenizer(labels, keypoints)
+            seqs = torch.LongTensor(seqs)
+            return img, seqs
         
         return img, labels, keypoints
 
