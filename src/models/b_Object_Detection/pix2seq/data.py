@@ -156,6 +156,8 @@ def create_df(read_file_path, write_file_path):
 
 
 if __name__ == "__main__":
+
+    create_json()
     train_file_path = 'data/train_imgloc_caption.jsonl'  
     test_file_path = 'data/test_imgloc_caption.jsonl' 
 
