@@ -14,7 +14,7 @@ def get_transform_train():
     return A.Compose([
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(p=0.2),
-        A.Resize(CFG.img_size), 
+        A.Resize(CFG.img_size, CFG.img_size), 
         A.Normalize(),
     ],
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
@@ -22,7 +22,7 @@ def get_transform_train():
 def get_transform_valid():
     """image preprocess"""
     return A.Compose([
-        A.Resize(CFG.img_size),  
+        A.Resize(CFG.img_size, CFG.img_size),  
         A.Normalize(),
     ],
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
