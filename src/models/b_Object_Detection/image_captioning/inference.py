@@ -1,8 +1,8 @@
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
-from model import CNNtoRNN
-from utils import load_checkpoint
+from models.b_Object_Detection.image_captioning.model import CNNtoRNN
+from models.b_Object_Detection.image_captioning.utils import load_checkpoint
 from get_loader import get_data_loaders, Vocabulary  
 
 

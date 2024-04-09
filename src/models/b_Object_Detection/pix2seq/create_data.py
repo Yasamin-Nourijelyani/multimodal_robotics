@@ -37,7 +37,7 @@ def create_json():
         ((0, 128, 0), 'green')
     ]
 
-    num_images = 10
+    num_images = 20000
     blocks_per_image = 10
     block_size = 15
     block_depth = 5
