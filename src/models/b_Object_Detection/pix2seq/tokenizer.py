@@ -152,8 +152,7 @@ def collate_fn(batch, max_len, pad_idx):
 
 def get_loaders(train_df, valid_df, tokenizer, img_size, batch_size, max_len, pad_idx, num_workers=2):
 
-    train_ds = KeypointDataset(train_df, transforms=get_transform_train(
-        img_size), tokenizer=tokenizer)
+    train_ds = KeypointDataset(train_df, transforms=get_transform_train(), tokenizer=tokenizer)
 
     trainloader = torch.utils.data.DataLoader(
         train_ds,
@@ -164,8 +163,7 @@ def get_loaders(train_df, valid_df, tokenizer, img_size, batch_size, max_len, pa
         pin_memory=True,
     )
 
-    valid_ds = KeypointDataset(valid_df, transforms=get_transform_valid(
-        img_size), tokenizer=tokenizer)
+    valid_ds = KeypointDataset(valid_df, transforms=get_transform_valid(), tokenizer=tokenizer)
 
     validloader = torch.utils.data.DataLoader(
         valid_ds,
