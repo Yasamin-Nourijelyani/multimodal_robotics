@@ -39,8 +39,8 @@ def create_json():
 
     num_images = 10
     blocks_per_image = 10
-    block_size = 25
-    block_depth = 10
+    block_size = 15
+    block_depth = 5
     target_size = (384, 384)
 
     out_dir_images = 'data/coord_text_images_random/images/'
@@ -58,13 +58,13 @@ def create_json():
         img = Image.new('RGB', target_size, color='white')
         draw = ImageDraw.Draw(img)
 
-        head_radius = 70
+        head_radius = 30
         head_center = (target_size[0] // 2, head_radius + 10)
         head_bbox = (head_center[0] - head_radius, head_center[1] - head_radius,
                     head_center[0] + head_radius, head_center[1] + head_radius)
         draw.ellipse(head_bbox, fill=(0, 0, 0))  # black
 
-        body_radius = 140
+        body_radius = 60
         body_center = (head_center[0], head_center[1] + head_radius + body_radius)
         body_bbox = (body_center[0] - body_radius, body_center[1] - body_radius,
                     body_center[0] + body_radius, body_center[1])
