@@ -91,32 +91,32 @@ def create_json():
 
 
 
-        # split the data to test and train
-        data = {
-            'image_path': [],
-            'caption': []
-        }
-        with open(text_file_path, 'r') as f:
-            next(f)  # Skip the header line
-            for line in f:
-                image_path, caption = line.strip().split('$', 1)
-                img_pth_full = out_dir_images + image_path
-                data['image_path'].append(img_pth_full)
-                data['caption'].append(caption)
-        df = pd.DataFrame(data)
-        train_df, test_df = train_test_split(df, test_size=0.1, random_state=42)
+    # split the data to test and train
+    data = {
+        'image_path': [],
+        'caption': []
+    }
+    with open(text_file_path, 'r') as f:
+        next(f)  # Skip the header line
+        for line in f:
+            image_path, caption = line.strip().split('$', 1)
+            img_pth_full = out_dir_images + image_path
+            data['image_path'].append(img_pth_full)
+            data['caption'].append(caption)
+    df = pd.DataFrame(data)
+    train_df, test_df = train_test_split(df, test_size=0.1, random_state=42)
 
 
-        train_df = train_df.to_dict(orient='records')
-        with open("data/train_imgloc_caption.jsonl", 'w') as f:
-            for line in train_df:
-                f.write(json.dumps(line) + "\n")
+    train_df = train_df.to_dict(orient='records')
+    with open("data/train_imgloc_caption.jsonl", 'w') as f:
+        for line in train_df:
+            f.write(json.dumps(line) + "\n")
 
 
-        test_df = test_df.to_dict(orient='records')
-        with open("data/test_imgloc_caption.jsonl", 'w') as f:
-            for line in test_df:
-                f.write(json.dumps(line) + "\n")
+    test_df = test_df.to_dict(orient='records')
+    with open("data/test_imgloc_caption.jsonl", 'w') as f:
+        for line in test_df:
+            f.write(json.dumps(line) + "\n")
 
 
 
