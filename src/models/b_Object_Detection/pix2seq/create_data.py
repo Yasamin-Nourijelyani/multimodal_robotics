@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
-
+from test_train_csv import create_df
 
 
 # generate data (random blocks and caption), split to test and train, create dataframe    
@@ -134,4 +134,13 @@ def create_json():
 if __name__ == "__main__":
 
     create_json()
+
+    train_file_path = 'data/train_imgloc_caption.jsonl'  
+    test_file_path = 'data/test_imgloc_caption.jsonl' 
+
+    train_csv_file_path = 'data/train_imgloc_caption.csv'  
+    test_csv_file_path = 'data/test_imgloc_caption.csv'
+
+    create_df(train_file_path, train_csv_file_path)
+    create_df(test_file_path, test_csv_file_path)
    
