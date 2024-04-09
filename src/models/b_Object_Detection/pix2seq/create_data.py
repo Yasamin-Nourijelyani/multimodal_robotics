@@ -72,7 +72,7 @@ def create_json():
 
         for block_index in range(blocks_per_image):
             x = np.random.randint(0, target_size[0] - block_size - block_depth)
-            y = np.random.randint(target_size[1] - 300, target_size[1] - block_size)
+            y = np.random.randint(target_size[1] - 155, target_size[1] - block_size)
             
             color, color_name = colors[np.random.randint(0, len(colors))]
             
