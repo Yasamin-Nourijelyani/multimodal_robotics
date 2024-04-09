@@ -1,26 +1,18 @@
-import gc
-import os
 import cv2
-import math
-import random
-from glob import glob
 import numpy as np
 import pandas as pd
 from functools import partial
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
 import albumentations as A
 import xml.etree.ElementTree as ET
 from sklearn.model_selection import StratifiedGroupKFold
-
 import torch
 from torch import nn
 import torch.nn.functional as F
 from torch.nn.utils.rnn import pad_sequence
 import cv2
 from torch.utils.data import Dataset
-import timm
 from timm.models.layers import trunc_normal_
 import transformers
 from transformers import top_k_top_p_filtering
@@ -32,14 +24,14 @@ def get_transform_train():
     return A.Compose([
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(p=0.2),
-        A.Resize(height=660, width=756), 
+        A.Resize(CFG.img_size), 
         A.Normalize(),
     ],
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
 
 def get_transform_valid():
     return A.Compose([
-        A.Resize(height=660, width=756),  
+        A.Resize(CFG.img_size),  
         A.Normalize(),
     ],
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
@@ -117,7 +109,13 @@ class KeypointTokenizer:
             tokenized.append(self.PAD_code)  
         return tokenized
 
+
+
+
     def decode(self, tokens: torch.tensor):
+        """
+        toekns: torch.LongTensor with shape [L]
+        """
         tokens = tokens.numpy()
         mask = tokens != self.PAD_code
         tokens = tokens[mask]
@@ -139,19 +137,52 @@ class KeypointTokenizer:
         keypoints[:, 1] = keypoints[:, 1] * self.height
 
         return labels, keypoints
-
-if __name__ == "__main__":
     
-    num_classes = len(classes)  # Number of unique labels
-    num_bins = CFG.num_bins     # Number of bins for quantization
-    width = CFG.img_size        # Image width
-    height = CFG.img_size       # Image height (assuming square images for simplicity)
-    max_len = CFG.max_len       # Maximum sequence length
 
-    tokenizer = KeypointTokenizer(num_classes=num_classes, num_bins=num_bins,
-                                width=width, height=height, max_len=max_len)
+def collate_fn(batch, max_len, pad_idx):
+    """
+    if max_len:
+        the sequences will all be padded to that length
+    """
+    image_batch, seq_batch = [], []
+    for image, seq in batch:
+        image_batch.append(image)
+        seq_batch.append(seq)
 
-    # For a dictionary, use CFG['num_bins'], CFG['img_size'], etc.
+    seq_batch = pad_sequence(
+        seq_batch, padding_value=pad_idx, batch_first=True)
+    if max_len:
+        pad = torch.ones(seq_batch.size(0), max_len -
+                         seq_batch.size(1)).fill_(pad_idx).long()
+        seq_batch = torch.cat([seq_batch, pad], dim=1)
+    image_batch = torch.stack(image_batch)
+    return image_batch, seq_batch
 
-    # Update the CFG with the PAD token index used by the tokenizer
-    CFG.pad_idx = tokenizer.PAD_code
+def get_loaders(train_df, valid_df, tokenizer, img_size, batch_size, max_len, pad_idx, num_workers=2):
+
+    train_ds = KeypointDataset(train_df, transforms=get_transform_train(
+        img_size), tokenizer=tokenizer)
+
+    trainloader = torch.utils.data.DataLoader(
+        train_ds,
+        batch_size=batch_size,
+        shuffle=True,
+        collate_fn=partial(collate_fn, max_len=max_len, pad_idx=pad_idx),
+        num_workers=num_workers,
+        pin_memory=True,
+    )
+
+    valid_ds = KeypointDataset(valid_df, transforms=get_transform_valid(
+        img_size), tokenizer=tokenizer)
+
+    validloader = torch.utils.data.DataLoader(
+        valid_ds,
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=partial(collate_fn, max_len=max_len, pad_idx=pad_idx),
+        num_workers=2,
+        pin_memory=True,
+    )
+
+    return trainloader, validloader
+
