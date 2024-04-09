@@ -1,26 +1,16 @@
 import cv2
 import numpy as np
-import pandas as pd
 from functools import partial
-from tqdm import tqdm
-import matplotlib.pyplot as plt
 import albumentations as A
-import xml.etree.ElementTree as ET
-from sklearn.model_selection import StratifiedGroupKFold
 import torch
-from torch import nn
-import torch.nn.functional as F
 from torch.nn.utils.rnn import pad_sequence
 import cv2
 from torch.utils.data import Dataset
-from timm.models.layers import trunc_normal_
-import transformers
-from transformers import top_k_top_p_filtering
-from transformers import get_linear_schedule_with_warmup
-import albumentations as A
 from config import CFG
 
+
 def get_transform_train():
+    """image preprocess"""
     return A.Compose([
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(p=0.2),
@@ -30,6 +20,7 @@ def get_transform_train():
     keypoint_params=A.KeypointParams(format='xy', remove_invisible=False))  
 
 def get_transform_valid():
+    """image preprocess"""
     return A.Compose([
         A.Resize(CFG.img_size),  
         A.Normalize(),
@@ -67,6 +58,7 @@ class KeypointDataset(Dataset):
 
 
 class KeypointTokenizer:
+    """For tokenizing keypoints """
     def __init__(self, num_classes: int, num_bins: int, width: int, height: int, max_len=500):
         self.num_classes = num_classes
         self.num_bins = num_bins
