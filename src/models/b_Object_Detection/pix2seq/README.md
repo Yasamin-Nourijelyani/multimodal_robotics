@@ -1,6 +1,6 @@
-# Pix2Seq Keypoint Implementation
+# Pix2Seq Keypoint Detect Implementation
 
-## Creating Data for Trainin
+## Creating Data for Training
 
 To create data for training and testing run 
 
