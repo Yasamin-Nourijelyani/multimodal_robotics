@@ -4,7 +4,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 import os
 from sklearn.model_selection import train_test_split
-from config import CFG
+import pandas as pd
+
 
 
 # generate data (random blocks and caption), split to test and train, create dataframe    
@@ -24,6 +25,16 @@ def draw_3d_block(draw, origin, block_size, block_depth, color, color_name):
         
     }
 
+def scale_keypoints(keypoint, original_size, target_size):
+    """Scale keypoint from original size to target size"""
+    x, y = keypoint['keypoint']['x'], keypoint['keypoint']['y']
+    scale_x = target_size[0] / original_size[0]
+    scale_y = target_size[1] / original_size[1]
+    keypoint['keypoint']['x'] = int(x * scale_x)
+    keypoint['keypoint']['y'] = int(y * scale_y)
+    return keypoint
+
+
 def create_json():
 
     colors = [
@@ -37,6 +48,9 @@ def create_json():
     blocks_per_image = 10
     block_size = 25
     block_depth = 10
+    original_size = (756, 660) # the original images were this dim, I will rescale the image and 
+    # the keypoints to get the target size image that is passed to the image detection model
+    target_size = (384, 384)
 
     out_dir_images = 'data/coord_text_images_random/images/'
     out_dir_caption = 'data/coord_text_images_random/'
@@ -44,19 +58,17 @@ def create_json():
     if not os.path.exists(out_dir_images):
         os.makedirs(out_dir_images)
 
-    block_metadata = []
 
     text_file_content = ["image$caption"]
 
     for img_index in range(num_images):
         block_metadata = []
 
-        width, height = CFG.img_size, CFG.img_size
-        img = Image.new('RGB', (width, height), color='white')
+        img = Image.new('RGB', original_size, color='white')
         draw = ImageDraw.Draw(img)
 
         head_radius = 70
-        head_center = (width // 2, head_radius + 10)
+        head_center = (original_size[0] // 2, head_radius + 10)
         head_bbox = (head_center[0] - head_radius, head_center[1] - head_radius,
                     head_center[0] + head_radius, head_center[1] + head_radius)
         draw.ellipse(head_bbox, fill=(0, 0, 0))  # black
@@ -68,19 +80,23 @@ def create_json():
         draw.pieslice(body_bbox, 180, 360, fill=(0, 0, 0))
 
         for block_index in range(blocks_per_image):
-            x = np.random.randint(0, width - block_size - block_depth)
-            y = np.random.randint(height - 300, height - block_size)
+            x = np.random.randint(0, original_size[0] - block_size - block_depth)
+            y = np.random.randint(original_size[1] - 300, original_size[1] - block_size)
             
             color, color_name = colors[np.random.randint(0, len(colors))]
             
             block_data = draw_3d_block(draw, (x, y), block_size, block_depth, color, color_name)
-            
-            block_metadata.append(block_data)
+            block_data_scaled = scale_keypoints(block_data, original_size, target_size)
+            block_metadata.append(block_data_scaled)
 
         caption = f"{block_metadata}"
         text_file_content.append(f"synthetic_image_{img_index + 1}.png${caption}")
 
+        img = img.resize(target_size, Image.ANTIALIAS)
+
         img_path = f"{out_dir_images}synthetic_image_{img_index + 1}.png"
+
+
         img.save(img_path)
 
         text_file_path = f"{out_dir_caption}captions.txt"
@@ -123,7 +139,8 @@ def create_json():
 
 
 
+
 if __name__ == "__main__":
 
     create_json()
-    
+   

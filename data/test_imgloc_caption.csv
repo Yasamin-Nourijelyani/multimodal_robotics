@@ -1,0 +1,11 @@
+id,names,x,y,img_path,label
+9,green,19,426,data/coord_text_images_random/images/synthetic_image_9.png,1
+9,orange,397,576,data/coord_text_images_random/images/synthetic_image_9.png,2
+9,yellow,684,439,data/coord_text_images_random/images/synthetic_image_9.png,3
+9,blue,454,460,data/coord_text_images_random/images/synthetic_image_9.png,0
+9,yellow,478,482,data/coord_text_images_random/images/synthetic_image_9.png,3
+9,orange,19,561,data/coord_text_images_random/images/synthetic_image_9.png,2
+9,orange,196,622,data/coord_text_images_random/images/synthetic_image_9.png,2
+9,green,396,436,data/coord_text_images_random/images/synthetic_image_9.png,1
+9,blue,73,587,data/coord_text_images_random/images/synthetic_image_9.png,0
+9,yellow,672,515,data/coord_text_images_random/images/synthetic_image_9.png,3
