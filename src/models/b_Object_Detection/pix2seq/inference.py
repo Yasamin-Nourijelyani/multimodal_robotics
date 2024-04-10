@@ -175,7 +175,7 @@ if __name__ == "__main__":
         for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
 
 
-            for keypoint, label, conf in zip(keypoints, labels[0], confs[0]):
+            for keypoint, label, conf in zip(keypoints[0], labels[0], confs[0]):
                 print("label__________", label)
                 print("label__________", keypoint)
                 print("label__________", conf)
