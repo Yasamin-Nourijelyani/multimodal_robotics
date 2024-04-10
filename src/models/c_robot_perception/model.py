@@ -109,7 +109,7 @@ def pix2seq(img_path, test_csv_file_path):
 
 
 
-def llm(text):
+def llm(text, intstructions_string):
 
 
     # Run python -m models.a_LM.download_and_save_model to download trained model once
@@ -121,10 +121,6 @@ def llm(text):
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
 
 
-
-
-
-    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:Pick up the blue block on your left, which is the second from the left nearest you."""
 
     prompt_template = lambda text: f'''[INST] {intstructions_string} \n{text} \n[/INST]'''
 
@@ -153,10 +149,13 @@ if __name__ == "__main__":
 
     test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
     
-    img_path = """synthetic_image_27.png"""
+    img_path = """synthetic_image_99.png"""
     text = pix2seq(img_path, test_csv_file_path)
 
+    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:Pick up the blue block on your left, which is the second from the left nearest you."""
 
 
-    extracted_dict = llm(text)
+
+
+    extracted_dict = llm(text, intstructions_string)
     print(extracted_dict)
