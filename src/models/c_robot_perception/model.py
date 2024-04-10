@@ -137,7 +137,9 @@ if __name__ == "__main__":
     cls2id = {cls_name: i for i, cls_name in enumerate(classes)}
     id2cls = {i: cls_name for i, cls_name in enumerate(classes)}
     img_path = "models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_10651.png"
-
     text = pix2seq(img_path, id2cls)
-    extracted_dict = llm(text)
-    print(extracted_dict)
+
+
+
+    # extracted_dict = llm(text)
+    # print(extracted_dict)
