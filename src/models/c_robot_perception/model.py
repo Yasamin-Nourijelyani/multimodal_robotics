@@ -12,7 +12,6 @@ import re
 import ast 
 from models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
 from tqdm import tqdm
-from optimum.quantizers import QuantizationConfig
 
 
 def pix2seq(img_path, test_csv_file_path):
