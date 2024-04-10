@@ -156,7 +156,7 @@ def plot_keypoint(img_path, coords):
     draw.ellipse([left_up_point, right_down_point], fill='red')
 
 
-    modified_img_path = 'modified_' + img_path
+    modified_img_path = img_path
     img.save(modified_img_path)
 
 
@@ -168,6 +168,7 @@ if __name__ == "__main__":
     # locate an image from the test dataset: 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
     instruction = "Its near the back, just under two blue blocks."
     img_path = """data/coord_text_images_non_random/images/synthetic_image_3.png"""
+    keypoint_img_path = """data/modified_images/synthetic_image_3.png"""
 
     # do not change
     intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:{instruction}"""
