@@ -158,6 +158,7 @@ def plot_keypoint(img_path, coords):
 
     modified_img_path = img_path
     img.save(modified_img_path)
+    print("keypoint saved")
 
 
 
