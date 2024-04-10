@@ -143,7 +143,7 @@ def llm(text, intstructions_string):
     extracted_dict = ast.literal_eval(answer.strip())
     return extracted_dict
     
-def plot_keypoint(img_path, coords):
+def plot_keypoint(img_path, coords, keypoint_img_path):
 
 
     img = Image.open(img_path)
@@ -156,8 +156,7 @@ def plot_keypoint(img_path, coords):
     draw.ellipse([left_up_point, right_down_point], fill='red')
 
 
-    modified_img_path = img_path
-    img.save(modified_img_path)
+    img.save(keypoint_img_path)
     print("keypoint saved")
 
 
@@ -178,4 +177,4 @@ if __name__ == "__main__":
     extracted_dict = llm(text, intstructions_string)
     print(extracted_dict)
 
-    plot_keypoint(img_path, extracted_dict)
+    plot_keypoint(img_path, extracted_dict, keypoint_img_path)
