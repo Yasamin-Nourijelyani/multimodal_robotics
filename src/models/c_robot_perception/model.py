@@ -12,6 +12,7 @@ import re
 import ast 
 from models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
 from tqdm import tqdm
+from optimum.quantizers import QuantizationConfig
 
 
 def pix2seq(img_path, test_csv_file_path):
@@ -116,9 +117,8 @@ def llm(text):
 
 
     model_directory = "models/a_LM/model_directory"
-    model = AutoModelForCausalLM.from_pretrained(model_directory)
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = model.to(device)
+    model = AutoModelForCausalLM.from_pretrained(model_directory, device_map="cuda:0")
+
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
 
 
