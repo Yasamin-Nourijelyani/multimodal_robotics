@@ -146,13 +146,13 @@ def llm(text, intstructions_string):
 
 if __name__ == "__main__":
 
-    
+    # to be changes for inference:
     # locate an image from the test dataset: 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
+    instruction = "Its near the back, just under two blue blocks."
+    img_path = """data/coord_text_images_non_random/images/synthetic_image_3.png"""
 
-    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:Pick up the blue block on your left, which is the second from the left nearest you."""
-
-    #img_path = """models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_99.png"""
-    img_path = """data/coord_text_images_non_random/images/synthetic_image_1.png"""
+    # do not change
+    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:{instruction}"""
     test_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
     text = pix2seq(img_path, test_csv_file_path)
     extracted_dict = llm(text, intstructions_string)
