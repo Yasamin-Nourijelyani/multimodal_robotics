@@ -79,6 +79,8 @@ for img_config in block_df['img_config'].unique():
     caption = f"{block_metadata}"
     text_file_content.append(f"synthetic_image_{img_config}.png${caption}")
 
+    img = img.resize((384, 384), Image.Resampling.LANCZOS)
+
     img_path = f"{out_dir}synthetic_image_{img_config}.png"
     img.save(img_path)
 
