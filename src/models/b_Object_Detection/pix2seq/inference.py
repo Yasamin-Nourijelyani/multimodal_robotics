@@ -105,7 +105,7 @@ def visualize(image, keypoints, category_ids, category_id_to_name, color=PRED_CO
 if __name__ == "__main__":
 
 
-    test_csv_file_path = 'data/test_imgloc_caption.csv'
+    test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
 
     valid_df = pd.read_csv(test_csv_file_path)
 
@@ -133,12 +133,12 @@ if __name__ == "__main__":
     model = EncoderDecoder(encoder, decoder)
     model.to(CFG.device)
 
-    msg = model.load_state_dict(torch.load('./best_valid_loss.pth', map_location=CFG.device))
+    msg = model.load_state_dict(torch.load('models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
     print(msg)
     model.eval()
 
     img_paths = """synthetic_image_10651.png"""
-    img_paths = ["./data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
+    img_paths = ["models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
 
     test_dataset = VOCDatasetTest(img_paths, size=CFG.img_size)
     test_loader = torch.utils.data.DataLoader(
@@ -167,7 +167,7 @@ if __name__ == "__main__":
 
         cv2.imwrite("results/" + img_path.split("/")[-1], img[..., ::-1])
 
-    text_output_path = "results/detection_output.txt"
+    text_output_path = "models/b_Object_Detection/pix2seq/results/detection_output.txt"
     with open(text_output_path, 'w') as file:
         for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
 
