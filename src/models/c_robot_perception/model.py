@@ -12,7 +12,7 @@ from peft import PeftModel
 import re
 import ast 
 from models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
-import tqdm
+from tqdm import tqdm
 
 
 def pix2seq(img_path, test_csv_file_path):
