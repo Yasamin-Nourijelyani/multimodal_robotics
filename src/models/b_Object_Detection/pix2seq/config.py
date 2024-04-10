@@ -8,6 +8,8 @@ class CFG:
     img_size = 384
     num_bins = img_size
     blocks_per_image = 10
+
+    num_classes = 4 # number of colors of boxes
     
     batch_size = 32
     epochs = 100
