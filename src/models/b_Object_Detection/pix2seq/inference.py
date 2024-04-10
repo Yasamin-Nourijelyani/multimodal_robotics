@@ -51,22 +51,14 @@ def postprocess(batch_preds, batch_confs, tokenizer):
     all_confs = []
     for i, EOS_idx in enumerate(EOS_idxs.tolist()):
         if EOS_idx == 0:
-            all_keypoints.append(None)
-            all_labels.append(None)
-            all_confs.append(None)
+            all_keypoints.append([])
+            all_labels.append([])
+            all_confs.append([])
             continue
         labels, keypoints = tokenizer.decode(batch_preds[i, :EOS_idx+1])
         confs = [round(batch_confs[j][i].item(), 3) for j in range(len(keypoints))]
 
-        # combined = list(zip(keypoints, labels, confs))
-        # sorted_combined = sorted(combined, key=lambda x: x[2], reverse=True)
-        # # select top 10 (number of colored blocks in the img) confidence keypoints
-        # if len(sorted_combined) > config.CFG.blocks_per_image:
-        #     sorted_combined = sorted_combined[:config.CFG.blocks_per_image]
-        # #unzip after filtering
-        # keypoints, labels, confs = zip(*sorted_combined) if sorted_combined else ([], [], [])
-        
-        
+       
         all_keypoints.append(keypoints)
         all_labels.append(labels)
         all_confs.append(confs)
@@ -104,9 +96,9 @@ def visualize_keypoints(img, keypoints, color=GT_COLOR, thickness=2):
 
 def visualize(image, keypoints, category_ids, category_id_to_name, color=PRED_COLOR, show=True):
     img = image.copy()
-    for keypoints, category_id in zip(keypoints, category_ids):
+    for keypoint, category_id in zip(keypoints, category_ids):
         class_name = category_id_to_name[category_id]
-        img = visualize_keypoints(img, keypoints, color)
+        img = visualize_keypoints(img, [keypoint], color)
     if show:
         plt.figure(figsize=(12, 12))
         plt.axis('off')
