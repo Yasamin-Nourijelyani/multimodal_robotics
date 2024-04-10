@@ -124,6 +124,10 @@ def llm(text):
 
 if __name__ == "__main__":
 
+    import os
+    print(os.getcwd())
+
+
     img_path = "../b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_10651.png"
     text = pix2seq(img_path)
     extracted_dict = llm(text)
