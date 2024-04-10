@@ -99,7 +99,7 @@ def visualize(image, keypoints, category_ids, category_id_to_name, color=PRED_CO
     img = image.copy()
     for keypoints, category_id in zip(keypoints, category_ids):
         class_name = category_id_to_name[category_id]
-        img = visualize_keypoints(img, keypoints, class_name, color)
+        img = visualize_keypoints(img, keypoints, color)
     if show:
         plt.figure(figsize=(12, 12))
         plt.axis('off')
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         img_path = img_paths[i]
         img = cv2.imread(img_path)[..., ::-1]
         img = cv2.resize(img, (CFG.img_size, CFG.img_size))
-        img = visualize(img, keypoints, labels, id2cls, show=False)
+        img = visualize(img, keypoints, labels, id2cls, color=PRED_COLOR, show=False)
 
         cv2.imwrite("results/" + img_path.split("/")[-1], img[..., ::-1])
 
