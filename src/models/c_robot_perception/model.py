@@ -1,6 +1,6 @@
 import torch
 import pandas as pd
-from src.models.b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
+from ..b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
 from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 import albumentations as A
 import cv2
