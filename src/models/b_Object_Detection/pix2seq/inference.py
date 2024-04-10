@@ -56,6 +56,16 @@ def postprocess(batch_preds, batch_confs, tokenizer):
             continue
         labels, keypoints = tokenizer.decode(batch_preds[i, :EOS_idx+1])
         confs = [round(batch_confs[j][i].item(), 3) for j in range(len(keypoints))]
+
+        combined = list(zip(keypoints, labels, confs))
+        sorted_combined = sorted(combined, key=lambda x: x[2], reverse=True)
+        
+        # select top 10 confidence keypoints
+        if len(sorted_combined) > 10:
+            sorted_combined = sorted_combined[:10]
+        #unzip after filtering
+        keypoints, labels, confs = zip(*sorted_combined) if sorted_combined else ([], [], [])
+        
         
         all_keypoints.append(keypoints)
         all_labels.append(labels)
