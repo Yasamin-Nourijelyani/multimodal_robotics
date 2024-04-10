@@ -38,7 +38,7 @@ def pix2seq(img_path, test_csv_file_path):
     model = EncoderDecoder(encoder, decoder)
     model.to(CFG.device)
 
-    msg = model.load_state_dict(torch.load('models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
+    msg = model.load_state_dict(torch.load('src/models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
     #print(msg)
     model.eval()
 
@@ -73,7 +73,7 @@ def pix2seq(img_path, test_csv_file_path):
 
         cv2.imwrite("results/" + img_path.split("/")[-1], img[..., ::-1])
 
-    text_output_path = "models/b_Object_Detection/pix2seq/results/detection_output.txt"
+    text_output_path = "src/models/b_Object_Detection/pix2seq/results/detection_output.txt"
     with open(text_output_path, 'w') as file:
         for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
 
@@ -114,7 +114,7 @@ def llm(text, intstructions_string):
     # Run python -m models.a_LM.download_and_save_model to download trained model once
 
 
-    model_directory = "models/a_LM/model_directory"
+    model_directory = "src/models/a_LM/model_directory"
     model = AutoModelForCausalLM.from_pretrained(model_directory, device_map="cuda:0")
 
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
