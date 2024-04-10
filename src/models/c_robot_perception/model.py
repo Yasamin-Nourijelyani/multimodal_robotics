@@ -113,7 +113,6 @@ def pix2seq(img_path, test_csv_file_path):
 def llm(text):
 
 
-
     model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
     model = AutoModelForCausalLM.from_pretrained(model_name,
                                                 device_map="auto",
@@ -144,10 +143,10 @@ def llm(text):
     print(text)
     answer = text.split("[/INST]")[1]
     answer = answer.split("[/")[0]
-    print(answer)
-    dict_string = re.search(r"\[/INST\] {(.*?)}\[/", text).group(1)
-    print(dict_string)
-    extracted_dict = ast.literal_eval(dict_string)
+    print(answer.strip())
+    #dict_string = re.search(r"\[/INST\] {(.*?)}\[/", text).group(1)
+    extracted_dict = ast.literal_eval(answer.strip())
+    print(extracted_dict.type())
     return extracted_dict
     
 
