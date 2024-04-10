@@ -112,7 +112,7 @@ def pix2seq(img_path, test_csv_file_path):
 def llm(text):
 
 
-    # Run python download_and_save_model.py to download trained model once
+    # Run python -m models.a_LM.download_and_save_model to download trained model once
 
 
     model_directory = "models/a_LM/model_directory"
@@ -144,7 +144,7 @@ def llm(text):
     print(answer.strip())
     #dict_string = re.search(r"\[/INST\] {(.*?)}\[/", text).group(1)
     extracted_dict = ast.literal_eval(answer.strip())
-    print(extracted_dict.type())
+    print(extracted_dict.type)
     return extracted_dict
     
 
