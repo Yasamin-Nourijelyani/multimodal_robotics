@@ -17,23 +17,27 @@ import ast
 
 def pix2seq(img_path):
 
+    
+
     num_classes = CFG.num_classes  # num of unique labels
     num_bins = CFG.num_bins     # num of bins for quantization
     width = CFG.img_size       
     height = CFG.img_size       
-    max_len = CFG.max_len     
+    max_len = CFG.max_len    
+
+    tokenizer = KeypointTokenizer(num_classes=num_classes, num_bins=num_bins,
+                            width=width, height=height, max_len=max_len)
+
+    CFG.pad_idx = tokenizer.PAD_code 
 
     # Initialize the model
     encoder = Encoder(model_name=CFG.model_name, pretrained=True, out_dim=256)
-    decoder = Decoder(vocab_size=CFG.vocab_size, encoder_length=CFG.num_patches, dim=256, num_heads=8, num_layers=6)
+    decoder = Decoder(vocab_size=tokenizer.vocab_size, encoder_length=CFG.num_patches, dim=256, num_heads=8, num_layers=6)
     model = EncoderDecoder(encoder, decoder)
     model.load_state_dict(torch.load('../b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
     model.eval().to(CFG.device)
 
-    tokenizer = KeypointTokenizer(num_classes=num_classes, num_bins=num_bins,
-                                width=width, height=height, max_len=max_len)
 
-    CFG.pad_idx = tokenizer.PAD_code
 
 
     # Image preprocessing
