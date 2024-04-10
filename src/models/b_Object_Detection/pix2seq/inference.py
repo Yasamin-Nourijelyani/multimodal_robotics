@@ -162,7 +162,9 @@ if __name__ == "__main__":
 
     os.mkdir("results")
     for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
+        print("img paths ____________", img_paths)
         img_path = img_paths[i]
+        print("img path 1 ____________",img_path)
         img = cv2.imread(img_path)[..., ::-1]
         img = cv2.resize(img, (CFG.img_size, CFG.img_size))
         img = visualize(img, keypoints, labels, id2cls, show=False)
