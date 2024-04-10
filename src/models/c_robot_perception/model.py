@@ -1,12 +1,3 @@
-import sys
-from pathlib import Path
-
-models_dir = Path(__file__).resolve().parents[2]
-if str(models_dir) not in sys.path:
-    sys.path.append(str(models_dir))
-
-
-
 import torch
 import pandas as pd
 from b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
