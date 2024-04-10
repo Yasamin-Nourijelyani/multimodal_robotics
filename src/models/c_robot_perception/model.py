@@ -52,8 +52,8 @@ def pix2seq(img_path):
 
     # Inference
     with torch.no_grad():
-        batch_preds, batch_confs = generate(model, img_transformed, CFG.tokenizer, max_len=CFG.max_len, top_k=CFG.top_k, top_p=CFG.top_p)
-        keypoints, labels, confs = postprocess(batch_preds, batch_confs, CFG.tokenizer)
+        batch_preds, batch_confs = generate(model, img_transformed, tokenizer, max_len=CFG.max_len, top_k=CFG.top_k, top_p=CFG.top_p)
+        keypoints, labels, confs = postprocess(batch_preds, batch_confs, tokenizer)
 
     # Visualization
     img = cv2.resize(img, (CFG.img_size, CFG.img_size))
