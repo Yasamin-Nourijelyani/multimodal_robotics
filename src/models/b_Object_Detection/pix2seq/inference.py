@@ -139,7 +139,7 @@ if __name__ == "__main__":
     model.eval()
 
     img_paths = """synthetic_image_10651.png synthetic_image_2042.png synthetic_image_1115.png synthetic_image_8669.png synthetic_image_13903.png /synthetic_image_8095.png synthetic_image_16797.png synthetic_image_9120.png 2009_001673.jpg synthetic_image_17554.png synthetic_image_16676.png synthetic_image_10407.png synthetic_image_10407.png synthetic_image_6518.png synthetic_image_972.png synthetic_image_16488.png synthetic_image_961.png synthetic_image_13420.png synthetic_image_9865.png synthetic_image_17745.png"""
-    img_paths = ["data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
+    img_paths = ["./data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
 
     test_dataset = VOCDatasetTest(img_paths, size=CFG.img_size)
     test_loader = torch.utils.data.DataLoader(
