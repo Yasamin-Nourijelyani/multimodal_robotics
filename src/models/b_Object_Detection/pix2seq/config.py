@@ -9,7 +9,7 @@ class CFG:
     num_bins = img_size
     
     batch_size = 32
-    epochs = 10
+    epochs = 50
     
     model_name = 'deit3_small_patch16_384_in21ft1k'
     num_patches = 576
