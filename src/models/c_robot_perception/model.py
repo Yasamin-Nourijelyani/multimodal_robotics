@@ -1,3 +1,6 @@
+import os
+print(os.getcwd())
+
 import torch
 import pandas as pd
 from ..b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
@@ -124,8 +127,7 @@ def llm(text):
 
 if __name__ == "__main__":
 
-    import os
-    print(os.getcwd())
+
 
 
     img_path = "../b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_10651.png"
