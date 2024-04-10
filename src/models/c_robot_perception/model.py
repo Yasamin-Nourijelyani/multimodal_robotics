@@ -34,10 +34,15 @@ def pix2seq(img_path, test_csv_file_path):
 
     # Initialize the model
     encoder = Encoder(model_name=CFG.model_name, pretrained=True, out_dim=256)
-    decoder = Decoder(vocab_size=tokenizer.vocab_size, encoder_length=CFG.num_patches, dim=256, num_heads=8, num_layers=6)
+    decoder = Decoder(vocab_size=tokenizer.vocab_size,
+                    encoder_length=CFG.num_patches, dim=256, num_heads=8, num_layers=6)
     model = EncoderDecoder(encoder, decoder)
-    model.load_state_dict(torch.load('models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
-    model.eval().to(CFG.device)
+    model.to(CFG.device)
+
+    msg = model.load_state_dict(torch.load('models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
+    print(msg)
+    model.eval()
+
 
 
     img_paths = img_path
@@ -147,7 +152,7 @@ if __name__ == "__main__":
 
     test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
     
-    img_path = "synthetic_image_10651.png"
+    img_path = """synthetic_image_10651.png"""
     text = pix2seq(img_path, test_csv_file_path)
 
 
