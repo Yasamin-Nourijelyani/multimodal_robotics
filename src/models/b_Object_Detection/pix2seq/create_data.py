@@ -6,6 +6,7 @@ import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from test_train_csv import create_df
+import config
 
 
 # generate data (random blocks and caption), split to test and train, create dataframe    
@@ -38,7 +39,7 @@ def create_json():
     ]
 
     num_images = 20000
-    blocks_per_image = 10
+    blocks_per_image = config.CFG.blocks_per_image
     block_size = 15
     block_depth = 5
     target_size = (384, 384)

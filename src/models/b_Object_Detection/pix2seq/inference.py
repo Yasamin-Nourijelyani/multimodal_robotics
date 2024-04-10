@@ -10,6 +10,7 @@ import cv2
 import matplotlib.pyplot as plt
 from tqdm.autonotebook import tqdm
 import os
+import config
 
 GT_COLOR = (0, 255, 0) # Green
 PRED_COLOR = (255, 0, 0) # Red
@@ -57,14 +58,13 @@ def postprocess(batch_preds, batch_confs, tokenizer):
         labels, keypoints = tokenizer.decode(batch_preds[i, :EOS_idx+1])
         confs = [round(batch_confs[j][i].item(), 3) for j in range(len(keypoints))]
 
-        combined = list(zip(keypoints, labels, confs))
-        sorted_combined = sorted(combined, key=lambda x: x[2], reverse=True)
-        
-        # select top 10 confidence keypoints
-        if len(sorted_combined) > 10:
-            sorted_combined = sorted_combined[:10]
-        #unzip after filtering
-        keypoints, labels, confs = zip(*sorted_combined) if sorted_combined else ([], [], [])
+        # combined = list(zip(keypoints, labels, confs))
+        # sorted_combined = sorted(combined, key=lambda x: x[2], reverse=True)
+        # # select top 10 (number of colored blocks in the img) confidence keypoints
+        # if len(sorted_combined) > config.CFG.blocks_per_image:
+        #     sorted_combined = sorted_combined[:config.CFG.blocks_per_image]
+        # #unzip after filtering
+        # keypoints, labels, confs = zip(*sorted_combined) if sorted_combined else ([], [], [])
         
         
         all_keypoints.append(keypoints)

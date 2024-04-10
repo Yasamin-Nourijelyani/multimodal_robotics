@@ -7,6 +7,7 @@ class CFG:
     max_len = 300
     img_size = 384
     num_bins = img_size
+    blocks_per_image = 10
     
     batch_size = 32
     epochs = 100
