@@ -157,5 +157,5 @@ if __name__ == "__main__":
 
 
 
-    # extracted_dict = llm(text)
-    # print(extracted_dict)
+    extracted_dict = llm(text)
+    print(extracted_dict)
