@@ -6,7 +6,7 @@ import os
 
 
 
-block_df = pd.read_csv('block_location.csv')
+block_df = pd.read_csv('data/block_location.csv')
 
 def draw_3d_block(draw, origin, block_size, block_depth, color, color_name):
     x, y = origin
@@ -34,7 +34,7 @@ blocks_per_image = 10
 block_size = 25
 block_depth = 10
 
-out_dir = 'coord_text_images_non_random/images/'
+out_dir = 'data/coord_text_images_non_random/images/'
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
