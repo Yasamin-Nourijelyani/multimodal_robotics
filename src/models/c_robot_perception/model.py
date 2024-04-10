@@ -15,7 +15,7 @@ import ast
 
 
 
-def pix2seq(img_path):
+def pix2seq(img_path, id2cls):
 
     
 
@@ -57,13 +57,13 @@ def pix2seq(img_path):
 
     # Visualization
     img = cv2.resize(img, (CFG.img_size, CFG.img_size))
-    img = visualize(img, keypoints[0], labels[0], CFG.id2cls, CFG.PRED_COLOR, show=True)
+    img = visualize(img, keypoints[0], labels[0], id2cls, CFG.PRED_COLOR, show=True)
 
     # Optionally, write keypoints information to a text file
     text_output_path = "single_image_detection_output.txt"
     with open(text_output_path, 'w') as file:
         for keypoint, label, conf in zip(keypoints[0], labels[0], confs[0]):
-            file.write(f"Label: {CFG.id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
+            file.write(f"Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
 
 
     # Define a list to hold the image descriptions
@@ -131,10 +131,13 @@ def llm(text):
 
 if __name__ == "__main__":
 
-
-
-
+    test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
+    valid_df = pd.read_csv(test_csv_file_path)
+    classes = sorted(valid_df['names'].unique())
+    cls2id = {cls_name: i for i, cls_name in enumerate(classes)}
+    id2cls = {i: cls_name for i, cls_name in enumerate(classes)}
     img_path = "models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_10651.png"
-    text = pix2seq(img_path)
+
+    text = pix2seq(img_path, id2cls)
     extracted_dict = llm(text)
     print(extracted_dict)

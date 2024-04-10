@@ -20,3 +20,10 @@ class CFG:
     weight_decay = 1e-4
 
     generation_steps = 101
+
+    top_k = 0
+    top_p=1
+
+    GT_COLOR = (0, 255, 0) # Green
+    PRED_COLOR = (255, 0, 0) # Red
+    TEXT_COLOR = (255, 255, 255) # White
