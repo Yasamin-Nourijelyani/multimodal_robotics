@@ -173,5 +173,8 @@ if __name__ == "__main__":
     text_output_path = "results/detection_output.txt"
     with open(text_output_path, 'w') as file:
         for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
-            for keypoint, label, conf, keypoint in zip(keypoints, labels, confs, keypoints):
+
+
+            for keypoint, label, conf in zip(keypoints, labels, confs):
+                print("label__________", label)
                 file.write(f"Image {i}, Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
