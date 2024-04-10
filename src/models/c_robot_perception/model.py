@@ -145,7 +145,6 @@ def llm(text):
     print(answer.strip())
     #dict_string = re.search(r"\[/INST\] {(.*?)}\[/", text).group(1)
     extracted_dict = ast.literal_eval(answer.strip())
-    print(extracted_dict.type)
     return extracted_dict
     
 
@@ -154,7 +153,7 @@ if __name__ == "__main__":
 
     test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
     
-    img_path = """synthetic_image_10651.png"""
+    img_path = """synthetic_image_9.png"""
     text = pix2seq(img_path, test_csv_file_path)
 
 
