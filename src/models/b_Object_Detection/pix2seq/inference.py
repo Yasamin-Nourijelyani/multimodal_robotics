@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
 
             for keypoint, label, conf in zip(keypoints, labels[0], confs[0]):
-                print("label__________", labels)
-                print("label__________", keypoints)
-                print("label__________", confs)
+                print("label__________", label)
+                print("label__________", keypoint)
+                print("label__________", conf)
                 file.write(f"Image {i}, Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
