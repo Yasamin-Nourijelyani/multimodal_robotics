@@ -1,5 +1,5 @@
 import torch
-from transformers.generation_utils import top_k_top_p_filtering
+from transformers import top_k_top_p_filtering
 from config import CFG
 from config import CFG
 from tokenizer import KeypointTokenizer
