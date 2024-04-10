@@ -168,8 +168,8 @@ if __name__ == "__main__":
             keypoints, labels, confs = postprocess(
                 batch_preds, batch_confs, tokenizer)
             all_keypoints.append(keypoints)
-            all_labels.extend(labels)
-            all_confs.extend(confs)
+            all_labels.append(labels)
+            all_confs.append(confs)
 
     for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
         img_path = img_paths[i]
