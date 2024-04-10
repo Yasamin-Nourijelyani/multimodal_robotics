@@ -39,7 +39,7 @@ def pix2seq(img_path, test_csv_file_path):
     model.to(CFG.device)
 
     msg = model.load_state_dict(torch.load('models/b_Object_Detection/pix2seq/best_valid_loss.pth', map_location=CFG.device))
-    print(msg)
+    #print(msg)
     model.eval()
 
 
@@ -104,7 +104,7 @@ def pix2seq(img_path, test_csv_file_path):
                 image_descriptions.append({'name': label, 'keypoint': keypoint})
 
     # Example output
-    print(f"Image description_______: {image_descriptions}")
+    #print(f"Image description_______: {image_descriptions}")
     return image_descriptions
 
 
@@ -135,7 +135,7 @@ def llm(text, intstructions_string):
     outputs = model.generate(input_ids=inputs["input_ids"].to("cuda"), max_new_tokens=280)
 
     text = tokenizer.batch_decode(outputs)[0]
-    print(text)
+    #print(text)
     answer = text.split("[/INST]")[1]
     answer = answer.split("}")[0]
     answer = answer + "}"
