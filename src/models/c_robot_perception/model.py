@@ -1,16 +1,28 @@
+import sys
+from pathlib import Path
+
+models_dir = Path(__file__).resolve().parents[2]
+if str(models_dir) not in sys.path:
+    sys.path.append(str(models_dir))
+
+
+
 import torch
 import pandas as pd
-from ...b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
-from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
+from b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
+from b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 import albumentations as A
 import cv2
 from matplotlib import pyplot as plt
-from models.b_Object_Detection.pix2seq.inference import generate, postprocess, visualize
-from models.b_Object_Detection.pix2seq.config import CFG
+from b_Object_Detection.pix2seq.inference import generate, postprocess, visualize
+from b_Object_Detection.pix2seq.config import CFG
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 import re
 import ast 
+
+
+
 
 def pix2seq(img_path):
 
