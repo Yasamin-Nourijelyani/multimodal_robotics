@@ -1,12 +1,12 @@
 import torch
 import pandas as pd
-from src.models.b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
-from src.models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
+from models.b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
+from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 import albumentations as A
 import cv2
 from matplotlib import pyplot as plt
-from src.models.b_Object_Detection.pix2seq.inference import generate, postprocess, visualize
-from src.models.b_Object_Detection.pix2seq.config import CFG
+from models.b_Object_Detection.pix2seq.inference import generate, postprocess, visualize
+from models.b_Object_Detection.pix2seq.config import CFG
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 import re
