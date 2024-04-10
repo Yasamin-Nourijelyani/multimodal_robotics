@@ -117,6 +117,8 @@ def llm(text):
 
     model_directory = "models/a_LM/model_directory"
     model = AutoModelForCausalLM.from_pretrained(model_directory)
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = model.to(device)
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
 
 
