@@ -86,9 +86,6 @@ class VOCDatasetTest(torch.utils.data.Dataset):
 
 def visualize_keypoints(img, keypoints, color=GT_COLOR, thickness=2):
     """Visualizes keypoints on the image"""
-    print(f"Color being used: {color}")  # debugging line to check the color value
-    print("\n", type(color))
-    print(len(color), "\n")
     assert isinstance(color, tuple) and len(color) in [3, 4], f"Invalid color value: {color}"
     for keypoint in keypoints:
         x, y = int(keypoint[0]), int(keypoint[1])
@@ -174,6 +171,6 @@ if __name__ == "__main__":
 
     text_output_path = "results/detection_output.txt"
     with open(text_output_path, 'w') as file:
-        for i, (keypoints, labels, confs, keypoints) in enumerate(zip(all_keypoints, all_labels, all_confs)):
+        for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
             for keypoint, label, conf, keypoint in zip(keypoints, labels, confs, keypoints):
                 file.write(f"Image {i}, Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
