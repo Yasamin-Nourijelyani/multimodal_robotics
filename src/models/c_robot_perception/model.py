@@ -94,7 +94,7 @@ def pix2seq(img_path, test_csv_file_path):
     )
 
     # Open and read the text file and convert it to correct format
-    with open("single_image_detection_output.txt", "r") as file:
+    with open(text_output_path, "r") as file:
         for line in file:
             match = line_pattern.match(line)
             if match:
