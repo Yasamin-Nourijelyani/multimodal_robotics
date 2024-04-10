@@ -96,9 +96,8 @@ def visualize_keypoints(img, keypoints, color=GT_COLOR, thickness=2):
 
 def visualize(image, keypoints, category_ids, category_id_to_name, color=PRED_COLOR, show=True):
     img = image.copy()
-    for keypoint, category_id in zip(keypoints, category_ids):
-        class_name = category_id_to_name[category_id]
-        img = visualize_keypoints(img, [keypoint], color)
+    for keypoints, category_id in zip(keypoints, category_ids):
+        img = visualize_keypoints(img, keypoints, color)
     if show:
         plt.figure(figsize=(12, 12))
         plt.axis('off')
