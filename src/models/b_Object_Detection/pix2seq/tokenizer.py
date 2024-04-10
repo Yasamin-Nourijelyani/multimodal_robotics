@@ -6,7 +6,7 @@ import torch
 from torch.nn.utils.rnn import pad_sequence
 import cv2
 from torch.utils.data import Dataset
-from config import CFG
+from models.b_Object_Detection.pix2seq.config import CFG
 
 
 def get_transform_train():
