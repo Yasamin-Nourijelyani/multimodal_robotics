@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 from models.b_Object_Detection.pix2seq.inference import generate, postprocess, visualize
 from models.b_Object_Detection.pix2seq.config import CFG
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from peft import PeftModel
 import re
 import ast 
 from models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
@@ -113,16 +112,15 @@ def pix2seq(img_path, test_csv_file_path):
 def llm(text):
 
 
-    model_name = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
-    model = AutoModelForCausalLM.from_pretrained(model_name,
-                                                device_map="auto",
-                                                trust_remote_code=False,
-                                                revision="main")
+    # Run python download_and_save_model.py to download trained model once
 
-    model = PeftModel.from_pretrained(model, "nourijel/robotics_finetuned_text_perception")
 
-    # load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+    model_directory = "models/a_LM/model_directory"
+    model = AutoModelForCausalLM.from_pretrained(model_directory)
+    tokenizer = AutoTokenizer.from_pretrained(model_directory)
+
+
+
 
 
     intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:Pick up the blue block on your left, which is the second from the left nearest you."""
