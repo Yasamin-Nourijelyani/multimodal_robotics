@@ -44,8 +44,7 @@ def pix2seq(img_path, test_csv_file_path):
 
 
 
-    img_paths = img_path
-    img_paths = ["models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
+    img_paths = [img_path]
 
     test_dataset = VOCDatasetTest(img_paths, size=CFG.img_size)
     test_loader = torch.utils.data.DataLoader(
@@ -148,8 +147,7 @@ def llm(text, intstructions_string):
 if __name__ == "__main__":
 
     test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
-    
-    img_path = """synthetic_image_99.png"""
+    img_path = """models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_99.png"""
     text = pix2seq(img_path, test_csv_file_path)
 
     intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:Pick up the blue block on your left, which is the second from the left nearest you."""
