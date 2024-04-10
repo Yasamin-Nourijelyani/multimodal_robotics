@@ -38,14 +38,14 @@ def create_json():
         ((0, 128, 0), 'green')
     ]
 
-    num_images = 20000
+    num_images = 20200
     blocks_per_image = config.CFG.blocks_per_image
     block_size = 15
     block_depth = 5
     target_size = (384, 384)
 
-    out_dir_images = 'data/coord_text_images_random/images/'
-    out_dir_caption = 'data/coord_text_images_random/'
+    out_dir_images = 'models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/'
+    out_dir_caption = 'models/b_Object_Detection/pix2seq/data/coord_text_images_random/'
 
     if not os.path.exists(out_dir_images):
         os.makedirs(out_dir_images)
@@ -112,12 +112,19 @@ def create_json():
             data['image_path'].append(img_pth_full)
             data['caption'].append(caption)
     df = pd.DataFrame(data)
-    train_df, test_df = train_test_split(df, test_size=0.1, random_state=42)
+    train_df, temp_test_df = train_test_split(df, test_size=0.2, random_state=42)  # 80% training, 20% temporal test
+    val_df, test_df = train_test_split(temp_test_df, test_size=0.5, random_state=42)  # Splitting the 20% equally into validation and test
+
 
 
     train_df = train_df.to_dict(orient='records')
     with open("data/train_imgloc_caption.jsonl", 'w') as f:
         for line in train_df:
+            f.write(json.dumps(line) + "\n")
+
+    val_df = val_df.to_dict(orient='records')
+    with open("data/val_imgloc_caption.jsonl", 'w') as f:
+        for line in val_df:
             f.write(json.dumps(line) + "\n")
 
 
@@ -136,12 +143,15 @@ if __name__ == "__main__":
 
     create_json()
 
-    train_file_path = 'data/train_imgloc_caption.jsonl'  
-    test_file_path = 'data/test_imgloc_caption.jsonl' 
+    train_file_path = 'models/b_Object_Detection/pix2seq/data/train_imgloc_caption.jsonl'  
+    val_file_path = 'models/b_Object_Detection/pix2seq/data/val_imgloc_caption.jsonl' 
+    test_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
 
-    train_csv_file_path = 'data/train_imgloc_caption.csv'  
-    test_csv_file_path = 'data/test_imgloc_caption.csv'
+    train_csv_file_path = 'models/b_Object_Detection/pix2seq/data/train_imgloc_caption.csv'  
+    val_csv_file_path = 'models/b_Object_Detection/pix2seq/data/val_imgloc_caption.csv'  
+    test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
 
     create_df(train_file_path, train_csv_file_path)
     create_df(test_file_path, test_csv_file_path)
+    create_df(val_file_path, val_csv_file_path)
    
