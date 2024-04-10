@@ -156,7 +156,9 @@ if __name__ == "__main__":
                 model, x, tokenizer, max_len=CFG.generation_steps, top_k=0, top_p=1)
             keypoints, labels, confs = postprocess(
                 batch_preds, batch_confs, tokenizer)
-            all_keypoints.extend(keypoints)
+            print("type keypoints___________", type(keypoints))
+            print("\n", keypoints)
+            all_keypoints.append(keypoints)
             all_labels.extend(labels)
             all_confs.extend(confs)
 
