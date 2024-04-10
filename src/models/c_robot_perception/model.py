@@ -1,8 +1,7 @@
 import torch
 import pandas as pd
-from config import CFG
 from tokenizer import KeypointTokenizer
-from model import Encoder, Decoder, EncoderDecoder
+from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 import albumentations as A
 import cv2
 from matplotlib import pyplot as plt
