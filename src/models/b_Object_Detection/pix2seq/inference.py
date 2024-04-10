@@ -1,8 +1,8 @@
 import torch
 from transformers import top_k_top_p_filtering
 from models.b_Object_Detection.pix2seq.config import CFG
-from tokenizer import KeypointTokenizer
-from model import Encoder, Decoder, EncoderDecoder
+from models.b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer
+from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 import pandas as pd
 import albumentations as A
 import cv2
