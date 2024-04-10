@@ -12,6 +12,7 @@ import re
 import ast 
 from src.models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
 from tqdm import tqdm
+from PIL import Image, ImageDraw
 
 
 def pix2seq(img_path, test_csv_file_path):
@@ -142,6 +143,23 @@ def llm(text, intstructions_string):
     extracted_dict = ast.literal_eval(answer.strip())
     return extracted_dict
     
+def plot_keypoint(img_path, coords):
+
+
+    img = Image.open(img_path)
+    draw = ImageDraw.Draw(img)
+
+    radius = 2
+
+    left_up_point = (coords['x'] - radius, coords['y'] - radius)
+    right_down_point = (coords['x'] + radius, coords['y'] + radius)
+    draw.ellipse([left_up_point, right_down_point], fill='red')
+
+
+    modified_img_path = 'modified_' + img_path
+    img.save(modified_img_path)
+
+
 
 
 if __name__ == "__main__":
@@ -157,3 +175,5 @@ if __name__ == "__main__":
     text = pix2seq(img_path, test_csv_file_path)
     extracted_dict = llm(text, intstructions_string)
     print(extracted_dict)
+
+    plot_keypoint(img_path, extracted_dict)
