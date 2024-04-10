@@ -142,7 +142,7 @@ def llm(text):
 
     text = tokenizer.batch_decode(outputs)[0]
     print(text)
-    dict_string = re.search(r"\[/INST\] (.*?)\[/s\]", text).group(1)
+    dict_string = re.search(r"\[/INST\] {(.*?)}\[/", text).group(1)
     extracted_dict = ast.literal_eval(dict_string)
     return extracted_dict
     
