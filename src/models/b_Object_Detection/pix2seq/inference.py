@@ -1,7 +1,6 @@
 import torch
 from transformers import top_k_top_p_filtering
-from config import CFG
-from config import CFG
+from models.b_Object_Detection.pix2seq.config import CFG
 from tokenizer import KeypointTokenizer
 from model import Encoder, Decoder, EncoderDecoder
 import pandas as pd
@@ -9,8 +8,6 @@ import albumentations as A
 import cv2
 import matplotlib.pyplot as plt
 from tqdm.autonotebook import tqdm
-import os
-import config
 
 GT_COLOR = (0, 255, 0) # Green
 PRED_COLOR = (255, 0, 0) # Red

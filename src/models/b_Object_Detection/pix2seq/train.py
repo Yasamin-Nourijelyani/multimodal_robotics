@@ -4,10 +4,10 @@ from tqdm import tqdm
 import torch
 from torch import nn
 from transformers import get_linear_schedule_with_warmup
-from config import CFG
-import utils
-from tokenizer import KeypointTokenizer, get_loaders
-from model import Encoder, Decoder, EncoderDecoder
+from models.b_Object_Detection.pix2seq.config import CFG
+import models.b_Object_Detection.pix2seq.utils
+from models.b_Object_Detection.pix2seq.tokenizer import KeypointTokenizer, get_loaders
+from models.b_Object_Detection.pix2seq.model import Encoder, Decoder, EncoderDecoder
 
 def train_epoch(model, train_loader, optimizer, lr_scheduler, criterion, logger=None):
     model.train()

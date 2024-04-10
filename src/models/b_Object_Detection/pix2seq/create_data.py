@@ -5,8 +5,8 @@ from PIL import Image, ImageDraw
 import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from test_train_csv import create_df
-import config
+from models.b_Object_Detection.pix2seq.test_train_csv import create_df
+import models.b_Object_Detection.pix2seq.config as config
 
 
 # generate data (random blocks and caption), split to test and train, create dataframe    

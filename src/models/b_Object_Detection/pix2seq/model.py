@@ -4,8 +4,8 @@ import cv2
 import timm
 from timm.models.layers import trunc_normal_
 import albumentations as A
-from config import CFG
-import utils
+from models.b_Object_Detection.pix2seq.config import CFG
+import models.b_Object_Detection.pix2seq.utils as utils
 
 class Encoder(nn.Module):
     def __init__(self, model_name='deit3_small_patch16_384_in21ft1k', pretrained=False, out_dim=256):

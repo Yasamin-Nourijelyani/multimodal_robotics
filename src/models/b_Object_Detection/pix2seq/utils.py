@@ -1,5 +1,5 @@
 import torch
-from config import CFG
+from models.b_Object_Detection.pix2seq.config import CFG
 
 def generate_square_subsequent_mask(sz):
     mask = (torch.triu(torch.ones((sz, sz), device=CFG.device))
