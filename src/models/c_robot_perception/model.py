@@ -11,15 +11,17 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 import re
 import ast 
+from models.b_Object_Detection.pix2seq.inference import VOCDatasetTest
+import tqdm
 
 
+def pix2seq(img_path, test_csv_file_path):
 
-
-def pix2seq(img_path, id2cls):
-
-    
-
-    num_classes = CFG.num_classes  # num of unique labels
+    valid_df = pd.read_csv(test_csv_file_path)
+    classes = sorted(valid_df['names'].unique())
+    num_classes = len(classes)
+    cls2id = {cls_name: i for i, cls_name in enumerate(classes)}
+    id2cls = {i: cls_name for i, cls_name in enumerate(classes)}
     num_bins = CFG.num_bins     # num of bins for quantization
     width = CFG.img_size       
     height = CFG.img_size       
@@ -38,32 +40,44 @@ def pix2seq(img_path, id2cls):
     model.eval().to(CFG.device)
 
 
+    img_paths = img_path
+    img_paths = ["models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/" + path for path in img_paths.split(" ")]
+
+    test_dataset = VOCDatasetTest(img_paths, size=CFG.img_size)
+    test_loader = torch.utils.data.DataLoader(
+    test_dataset, batch_size=len(img_paths), shuffle=False, num_workers=0)
 
 
-    # Image preprocessing
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    transform = A.Compose([
-        A.Resize(CFG.img_size, CFG.img_size),
-        A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
-    img_transformed = transform(image=img)['image']
-    img_transformed = torch.FloatTensor(img_transformed).permute(2, 0, 1).unsqueeze(0).to(CFG.device)
+    all_keypoints = []
+    all_labels = []
+    all_confs = []
 
-    # Inference
     with torch.no_grad():
-        batch_preds, batch_confs = generate(model, img_transformed, tokenizer, max_len=CFG.max_len, top_k=CFG.top_k, top_p=CFG.top_p)
-        keypoints, labels, confs = postprocess(batch_preds, batch_confs, tokenizer)
+        for x in tqdm(test_loader):
+            batch_preds, batch_confs = generate(
+                model, x, tokenizer, max_len=CFG.generation_steps, top_k=0, top_p=1)
+            keypoints, labels, confs = postprocess(
+                batch_preds, batch_confs, tokenizer)
+            all_keypoints.append(keypoints)
+            all_labels.append(labels)
+            all_confs.append(confs)
 
-    # Visualization
-    img = cv2.resize(img, (CFG.img_size, CFG.img_size))
-    img = visualize(img, keypoints[0], labels[0], id2cls, CFG.PRED_COLOR, show=True)
+    for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
+        img_path = img_paths[i]
+        img = cv2.imread(img_path)[..., ::-1]
+        img = cv2.resize(img, (CFG.img_size, CFG.img_size))
+        img = visualize(img, keypoints, labels, id2cls, color=CFG.PRED_COLOR, show=False)
 
-    # Optionally, write keypoints information to a text file
-    text_output_path = "single_image_detection_output.txt"
+        cv2.imwrite("results/" + img_path.split("/")[-1], img[..., ::-1])
+
+    text_output_path = "models/b_Object_Detection/pix2seq/results/detection_output.txt"
     with open(text_output_path, 'w') as file:
-        for keypoint, label, conf in zip(keypoints[0], labels[0], confs[0]):
-            file.write(f"Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
+        for i, (keypoints, labels, confs) in enumerate(zip(all_keypoints, all_labels, all_confs)):
+
+
+            for keypoint, label, conf in zip(keypoints[0], labels[0], confs[0]):
+
+                file.write(f"Image {i}, Label: {id2cls[label]}, Confidence: {conf}, Keypoints: {keypoint}\n")
 
 
     # Define a list to hold the image descriptions
@@ -86,7 +100,7 @@ def pix2seq(img_path, id2cls):
                 image_descriptions.append({'name': label, 'keypoint': keypoint})
 
     # Example output
-    print(f"Image description: {image_descriptions}")
+    print(f"Image description_______: {image_descriptions}")
     return image_descriptions
 
 
@@ -132,12 +146,9 @@ def llm(text):
 if __name__ == "__main__":
 
     test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
-    valid_df = pd.read_csv(test_csv_file_path)
-    classes = sorted(valid_df['names'].unique())
-    cls2id = {cls_name: i for i, cls_name in enumerate(classes)}
-    id2cls = {i: cls_name for i, cls_name in enumerate(classes)}
-    img_path = "models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/synthetic_image_10651.png"
-    text = pix2seq(img_path, id2cls)
+    
+    img_path = "synthetic_image_10651.png"
+    text = pix2seq(img_path, test_csv_file_path)
 
 
 
