@@ -86,6 +86,8 @@ class VOCDatasetTest(torch.utils.data.Dataset):
 
 def visualize_keypoints(img, keypoints, color=GT_COLOR, thickness=2):
     """Visualizes keypoints on the image"""
+    print(f"Color being used: {color}")  # debugging line to check the color value
+    assert isinstance(color, tuple) and len(color) in [3, 4], f"Invalid color value: {color}"
     for keypoint in keypoints:
         x, y = int(keypoint[0]), int(keypoint[1])
         cv2.circle(img, (x, y), radius=1, color=color, thickness=thickness)
