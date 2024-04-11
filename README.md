@@ -8,7 +8,10 @@ Please see the video of our project here:
 
 # Model Architecture:
 
-[Insert image here]
+<figure>
+  <img src="architecture.png" alt="Alt text for image" style="width: 100%;">
+  <figcaption>**Figure 1: Architecture for Robot Perception Enhancement Model.** The input is the image and the instruction for the model to locate the correct box in the image. The model will first generate a text description of the image, providing the coordinates for all of the blocks in the image as well as their color. This is done by the keypoint detection model that is inspired from the Pix2Seq model [1]. The output of Pix2Seq and the instruction input will be given to the fine tuned Large Language Model [2]. The output will be a dictionary of the x and y keypoint coordinates that the model gives with high confidence to be the correct location of the image and is plotted on the original figure.</figcaption>
+</figure>
 
 # Basic setup before running the code
 
@@ -25,9 +28,9 @@ pip install -r requirements.txt
 
 ## Running Code on Your Examples
 
-Note, please connect to a 15G or higher RAM GPU (even for inference).
+Note: please connect to a 15G or higher RAM GPU (even for inference).
 
-Also note the model might be slow (can take up to a minute for inference).
+Note: the model can take up to 1 minute for inference.
 
 Note: the model assumes input images are 384 by 384 px. 
 
@@ -44,7 +47,8 @@ In ```src/model.py``` update the
 python3 -m src.run
 ```
 
-
-
+# Citations
+[1] Pix2Seq
+[2] Mistral7B
 
 
