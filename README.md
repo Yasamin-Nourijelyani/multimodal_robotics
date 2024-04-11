@@ -29,6 +29,8 @@ Note, please connect to a 15G or higher RAM GPU (even for inference).
 
 Also note the model might be slow (can take up to a minute for inference).
 
+Note: the model assumes input images are 384 by 384 px. 
+
 In ```src/model.py``` update the 
 
 ```instruction```: the text description of the instruction
