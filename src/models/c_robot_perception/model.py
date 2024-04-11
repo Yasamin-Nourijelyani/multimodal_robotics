@@ -157,24 +157,25 @@ def plot_keypoint(img_path, coords, keypoint_img_path):
 
 
     img.save(keypoint_img_path)
-    print("keypoint saved")
+    print(f"Image with keypoint saved in location: {keypoint_img_path}")
 
 
 
 
 if __name__ == "__main__":
 
-    # to be changes for inference:
+    # to be changed for inference:
     # locate an image from the test dataset: 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
     instruction = "Locate the green blocks that is near the back, just under two blue blocks."
     img_path = """data/coord_text_images_non_random/images/synthetic_image_3.png"""
     # where to save image after plotting keypoint
     keypoint_img_path = """data/modified_images/synthetic_image_3.png"""
-
-    # do not change
+#_________________________________________________________________________________________________________
+    # path for vocab - do not change
     test_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
+    # running the model pix2seq > llm
     text = pix2seq(img_path, test_csv_file_path)
     extracted_dict = llm(text, instruction)
     print(extracted_dict)
-
+    #final results plotted
     plot_keypoint(img_path, extracted_dict, keypoint_img_path)
