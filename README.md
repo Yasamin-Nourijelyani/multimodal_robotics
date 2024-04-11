@@ -1,13 +1,16 @@
 # Robotics Visual Perception Enhancement
 
-The goal of this project is to enhance perception capabilities of robots by fine tuning a multimodal vision-language model. 
+The goal of this project is to enhance perception capabilities of robots by fine tuning a multimodal vision-language model.
+Note: inside each directory, there is a readme discussing the files and purpose of the files in that directory. 
+
 Please see the video of our project here:
+[Insert video here]
 
 # Model Architecture:
 
 [Insert image here]
 
-### Basic setup before running the code
+# Basic setup before running the code
 
 The following setup is required before running the code.
 
@@ -20,7 +23,7 @@ pip install -r requirements.txt
 ```
 
 
-# Running Code on Your Examples
+## Running Code on Your Examples
 
 Note, please connect to a 15G or higher RAM GPU (even for inference).
 
@@ -34,9 +37,9 @@ In ```src/model.py``` update the
 
 ```keypoint_img_path```: Location for where to save the image with the keypoint as predicted by the model on the image coresponding to the instruction.   
 
-## Run
+### Run
 ```
-python -m src.model
+python -m src.run
 ```
 
 

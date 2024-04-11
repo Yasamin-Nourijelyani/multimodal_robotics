@@ -1,4 +1,4 @@
-# Final Robot Perception Model
+# Robot Perception Model
 
 The model takes as input an image of objects that look very similar in a cluttered environment, and can take text instrcutions of an object and detect that object 
 coordinates. 
