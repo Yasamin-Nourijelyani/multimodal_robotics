@@ -109,7 +109,7 @@ def pix2seq(img_path, test_csv_file_path):
 
 
 
-def llm(text, intstructions_string):
+def llm(text, instruction):
 
 
     # Run python -m models.a_LM.download_and_save_model to download trained model once
@@ -120,7 +120,7 @@ def llm(text, intstructions_string):
 
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
 
-
+    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:{instruction}"""
 
     prompt_template = lambda text: f'''[INST] {intstructions_string} \n{text} \n[/INST]'''
 
@@ -166,15 +166,15 @@ if __name__ == "__main__":
 
     # to be changes for inference:
     # locate an image from the test dataset: 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
-    instruction = "Its near the back, just under two blue blocks."
+    instruction = "Locate the green blocks that is near the back, just under two blue blocks."
     img_path = """data/coord_text_images_non_random/images/synthetic_image_3.png"""
+    # where to save image after plotting keypoint
     keypoint_img_path = """data/modified_images/synthetic_image_3.png"""
 
     # do not change
-    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:{instruction}"""
     test_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
     text = pix2seq(img_path, test_csv_file_path)
-    extracted_dict = llm(text, intstructions_string)
+    extracted_dict = llm(text, instruction)
     print(extracted_dict)
 
     plot_keypoint(img_path, extracted_dict, keypoint_img_path)
