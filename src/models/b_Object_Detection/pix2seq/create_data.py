@@ -5,8 +5,8 @@ from PIL import Image, ImageDraw
 import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from models.b_Object_Detection.pix2seq.test_train_csv import create_df
-import models.b_Object_Detection.pix2seq.config as config
+from src.models.b_Object_Detection.pix2seq.test_train_csv import create_df
+import src.models.b_Object_Detection.pix2seq.config as config
 
 
 # generate data (random blocks and caption), split to test and train, create dataframe    
@@ -38,14 +38,14 @@ def create_json():
         ((0, 128, 0), 'green')
     ]
 
-    num_images = 20200
+    num_images = 50  # modify - num images it generates
     blocks_per_image = config.CFG.blocks_per_image
     block_size = 15
     block_depth = 5
     target_size = (384, 384)
 
-    out_dir_images = 'models/b_Object_Detection/pix2seq/data/coord_text_images_random/images/'
-    out_dir_caption = 'models/b_Object_Detection/pix2seq/data/coord_text_images_random/'
+    out_dir_images = 'data/testing/images/'
+    out_dir_caption = 'data/testing/'
 
     if not os.path.exists(out_dir_images):
         os.makedirs(out_dir_images)
@@ -96,9 +96,11 @@ def create_json():
             for line in text_file_content:
                 f.write(line + "\n")
 
+    return text_file_path, out_dir_images
 
 
 
+def split_data(text_file_path, out_dir_images):
     # split the data to test and train
     data = {
         'image_path': [],
@@ -143,15 +145,15 @@ if __name__ == "__main__":
 
     create_json()
 
-    train_file_path = 'models/b_Object_Detection/pix2seq/data/train_imgloc_caption.jsonl'  
-    val_file_path = 'models/b_Object_Detection/pix2seq/data/val_imgloc_caption.jsonl' 
-    test_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
+    # train_file_path = 'src/models/b_Object_Detection/pix2seq/data/train_imgloc_caption.jsonl'  
+    # val_file_path = 'src/models/b_Object_Detection/pix2seq/data/val_imgloc_caption.jsonl' 
+    # test_file_path = 'src/models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
 
-    train_csv_file_path = 'models/b_Object_Detection/pix2seq/data/train_imgloc_caption.csv'  
-    val_csv_file_path = 'models/b_Object_Detection/pix2seq/data/val_imgloc_caption.csv'  
-    test_csv_file_path = 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
+    # train_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/train_imgloc_caption.csv'  
+    # val_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/val_imgloc_caption.csv'  
+    # test_csv_file_path = 'src/models/b_Object_Detection/pix2seq/data/test_imgloc_caption.csv'
 
-    create_df(train_file_path, train_csv_file_path)
-    create_df(test_file_path, test_csv_file_path)
-    create_df(val_file_path, val_csv_file_path)
+    # create_df(train_file_path, train_csv_file_path)
+    # create_df(test_file_path, test_csv_file_path)
+    # create_df(val_file_path, val_csv_file_path)
    
