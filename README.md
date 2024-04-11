@@ -41,7 +41,7 @@ In ```src/model.py``` update the
 
 ### Run
 ```
-python -m src.run
+python3 -m src.run
 ```
 
 

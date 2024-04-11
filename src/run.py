@@ -28,6 +28,6 @@ if __name__ == "__main__":
     # locate an image from the test dataset: 'models/b_Object_Detection/pix2seq/data/test_imgloc_caption.jsonl' 
     img_path = """data/testing/images/synthetic_image_1.png"""
     # where to save image after plotting keypoint
-    keypoint_img_path = """data/testint_output/output_synthetic_image_1.png"""
+    keypoint_img_path = """data/testing_output/output_synthetic_image_1.png"""
 
     main(instruction, img_path, keypoint_img_path)
