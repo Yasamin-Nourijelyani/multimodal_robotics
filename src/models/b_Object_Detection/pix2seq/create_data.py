@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -98,7 +98,71 @@ def create_json():
 
     return text_file_path, out_dir_images
 
+def create_images_with_coordinate():
 
+    colors = [
+        ((255, 255, 0), 'yellow'),
+        ((255, 165, 0), 'orange'),
+        ((0, 0, 255), 'blue'),
+        ((0, 128, 0), 'green')
+    ]
+
+    num_images = 50  # modify - num images it generates
+    blocks_per_image = 10
+    block_size = 15
+    block_depth = 5
+    target_size = (384, 384)
+
+    out_dir_images = 'data/testing/images/with_coordinate/'
+
+    if not os.path.exists(out_dir_images):
+        os.makedirs(out_dir_images)
+
+
+    for img_index in range(num_images):
+        block_metadata = []
+
+        img = Image.new('RGB', target_size, color='white')
+        draw = ImageDraw.Draw(img)
+
+        head_radius = 30
+        head_center = (target_size[0] // 2, head_radius + 10)
+        head_bbox = (head_center[0] - head_radius, head_center[1] - head_radius,
+                    head_center[0] + head_radius, head_center[1] + head_radius)
+        draw.ellipse(head_bbox, fill=(0, 0, 0))  # black
+
+        body_radius = 60
+        body_center = (head_center[0], head_center[1] + head_radius + body_radius)
+        body_bbox = (body_center[0] - body_radius, body_center[1] - body_radius,
+                    body_center[0] + body_radius, body_center[1])
+        draw.pieslice(body_bbox, 180, 360, fill=(0, 0, 0))
+
+        for block_index in range(blocks_per_image):
+            x = np.random.randint(0, target_size[0] - block_size - block_depth)
+            y = np.random.randint(target_size[1] - 200, target_size[1] - block_size)
+            
+            color, color_name = colors[np.random.randint(0, len(colors))]
+            
+            block_data = draw_3d_block(draw, (x, y), block_size, block_depth, color, color_name)
+            block_metadata.append(block_data)
+
+
+        
+        # Write block coordinates
+        font = ImageFont.load_default()
+        for block in block_metadata:
+            x = block['keypoint']['x']
+            y = block['keypoint']['y']
+            draw.text((x + block_size/2, y + block_size/2), f"({x},{y})", fill='red', font=font)
+
+        img = img.resize(target_size, Image.Resampling.LANCZOS)
+        img_path = f"{out_dir_images}synthetic_image_{img_index + 1}.png"
+
+
+        img.save(img_path)
+
+
+    return out_dir_images
 
 def split_data(text_file_path, out_dir_images):
     # split the data to test and train
@@ -143,7 +207,10 @@ def split_data(text_file_path, out_dir_images):
 
 if __name__ == "__main__":
 
+    np.random.seed(60)
     create_json()
+    np.random.seed(6)
+    create_images_with_coordinate()
 
     # train_file_path = 'src/models/b_Object_Detection/pix2seq/data/train_imgloc_caption.jsonl'  
     # val_file_path = 'src/models/b_Object_Detection/pix2seq/data/val_imgloc_caption.jsonl' 
