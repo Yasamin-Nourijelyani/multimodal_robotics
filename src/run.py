@@ -59,8 +59,8 @@ if __name__ == "__main__":
 
   
 
-        dx = abs(realx - predx)
-        dy = abs(realy - predy)
+        dx = abs(float(realx) - float(predx))
+        dy = abs(float(realy) - float(predy))
 
 
         answer_df = answer_df.append({'Ground Truth x': realx, 'Ground Truth y': realy, 'Predicted x':predx, 'Predicted y':predy, 'abs_dx': dx, 'abs_dy':dy}, ignore_index=True)
