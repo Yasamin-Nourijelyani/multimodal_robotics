@@ -1,4 +1,4 @@
-# Robotics Visual Perception Enhancement
+# PixLMDetect: A Robotics Visual Perception Enhancement Model
 
 The goal of this project is to enhance perception capabilities of robots by fine tuning a multimodal vision-language model.
 Note: inside each directory, there is a readme discussing the files and purpose of the files in that directory. 
