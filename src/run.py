@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     answer_df = pd.DataFrame(columns=['Ground Truth x', 'Ground Truth y', 'Predicted x', 'Predicted y', 'abs_dx', 'abs_dy'])
     df = pd.read_csv('data/testing/captions.csv')
-
+    i = 0
     for index, row in df.iterrows():
         img_path = "data/testing/images/" + row['image'] 
         instruction = row['caption']
@@ -64,6 +64,8 @@ if __name__ == "__main__":
 
 
         answer_df = answer_df.append({'Ground Truth x': realx, 'Ground Truth y': realy, 'Predicted x':predx, 'Predicted y':predy, 'abs_dx': dx, 'abs_dy':dy}, ignore_index=True)
+        i += 1
+        print(f"saved row {i}")
 
 
     answer_df.to_csv("data/testing_output/answer.csv", index=False)
