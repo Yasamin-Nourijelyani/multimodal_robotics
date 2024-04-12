@@ -1,0 +1,51 @@
+﻿image,caption,answer
+synthetic_image_1.png,the block that is closest to you,205;249
+synthetic_image_2.png,the yellow block that is furthest frm you,349;351
+synthetic_image_3.png,the blue block that is cloest to yellow block,162;336
+synthetic_image_4.png,the only green block on the table,322;352
+synthetic_image_5.png,the leftmost blue block on the table,321;248
+synthetic_image_6.png,the block that is most far away from me,26;347
+synthetic_image_7.png,the blue block between two orange blocks,110;343
+synthetic_image_8.png,the block which is by itself on entire table,135;270
+synthetic_image_9.png,the block which has least number of same colored blocks,243;340
+synthetic_image_10.png,the block that is at center of the table,173;251
+synthetic_image_11.png,the block that has shortest distance from the person,97;197
+synthetic_image_12.png,the block that closest to left edge of the table,212;235
+synthetic_image_13.png,the orange block between two green blocks,248;259
+synthetic_image_14.png,the yellow block that is left of two blue blocks,180;232
+synthetic_image_15.png,the green block that is right above blue block,157;187
+synthetic_image_16.png,the block that is furthest away from rest of the blocks on the table,305;186
+synthetic_image_17.png,the only yellow block on the table,168;281
+synthetic_image_18.png,the green block between two yellow blocks,164;285
+synthetic_image_19.png,the yellow block which is closest to green block,137;256
+synthetic_image_20.png,the centermost block on the table,204;279
+synthetic_image_21.png,the block that is closest to right edge of the table,48;245
+synthetic_image_22.png,the orange block on the right side of the green block,129;261
+synthetic_image_23.png,the orange block that is sitting between two green blocks,49;367
+synthetic_image_24.png,the centered yellow block among cluster of yellow blocks,132;257
+synthetic_image_25.png,the blue block,168;206
+synthetic_image_26.png,the block that is on its own,162;286
+synthetic_image_27.png,the block that is at the corner of the table,344;346
+synthetic_image_28.png,the yellow block between orange and green block,242;204
+synthetic_image_29.png,the green block closest to blue block,269;273
+synthetic_image_30.png,the block that is closest to corner of the table,26;347
+synthetic_image_31.png,the block that is in the center but also furthest away from me,194;356
+synthetic_image_32.png,the orange blue which is far away from all the other blocks on the table,329;338
+synthetic_image_33.png,the blue block that is sort of between the diagnoal line between two yellow blocks,40;243
+synthetic_image_34.png,"the green blue that is between two other green blocks, it is also in the middle of the table",183;349
+synthetic_image_35.png,orange block between blue and yellow block,147;335
+synthetic_image_36.png,green block closest to center of the table,192;288
+synthetic_image_37.png,the green block that is closest to the yellow block,242;234
+synthetic_image_38.png,the blue block that is not near other blue blocks ,99;335
+synthetic_image_39.png,the orange block which is very close to left edge of the table,304;229
+synthetic_image_40.png,"the blue block that is close to two green blocks, it also forms a triangle with these two green blocks",272;361
+synthetic_image_41.png,the green block on the table,0;0
+synthetic_image_42.png,the block which is closest to me,54;203
+synthetic_image_43.png,the green block which is closest to edge of the table,2;328
+synthetic_image_44.png,the block in the middle but furthest away from me,197;368
+synthetic_image_45.png,the block which is closest to me,180;207
+synthetic_image_46.png,the green block which overlaps with yellow block,158;333
+synthetic_image_47.png,the blue block which is further away from me,296;319
+synthetic_image_48.png,the green block near orange block,201;199
+synthetic_image_49.png,green block surrounded by blue blocks,131;250
+synthetic_image_50.png,the blue block which is not near any other blocks on the table,250;204
