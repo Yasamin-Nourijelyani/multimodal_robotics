@@ -63,7 +63,7 @@ if __name__ == "__main__":
         dy = abs(float(realy) - float(predy))
 
 
-        answer_df = answer_df.append({'Ground Truth x': realx, 'Ground Truth y': realy, 'Predicted x':predx, 'Predicted y':predy, 'abs_dx': dx, 'abs_dy':dy}, ignore_index=True)
+        answer_df = pd.concat([answer_df, pd.DataFrame([{'Ground Truth x': realx, 'Ground Truth y': realy, 'Predicted x':predx, 'Predicted y':predy, 'abs_dx': dx, 'abs_dy':dy}])], ignore_index=True)
         i += 1
         print(f"saved row {i}")
 
