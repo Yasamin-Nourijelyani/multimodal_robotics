@@ -120,12 +120,13 @@ def llm(text, instruction):
 
     tokenizer = AutoTokenizer.from_pretrained(model_directory)
 
-    intstructions_string = f""" Output only the keypoint location of the block corresponding to following instruction. Instructions are from the perspective of the black figure. Instruction:{instruction}"""
+
+    intstructions_string = f""" Output only the keypoint location of the block corresponding to following 
+                                instruction. Instructions are from the perspective of the black figure. 
+                                Instruction:{instruction}"""
 
     prompt_template = lambda text: f'''[INST] {intstructions_string} \n{text} \n[/INST]'''
-
     prompt = prompt_template(text)
-    #print(prompt)
 
 
     model.eval()
