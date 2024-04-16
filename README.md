@@ -4,8 +4,6 @@ The goal of this project is to enhance perception capabilities of robots by deve
 
 Note: inside each directory, there is a readme discussing the files and purpose of the files in that directory. 
 
-Please see the video of our project here:
-[Insert video here]
 
 # Model Architecture:
 
@@ -14,9 +12,6 @@ Please see the video of our project here:
   <figcaption><strong>Figure 1: Architecture for PixLM-Detect: A Robot Perception Enhancement Model.</strong> The input is the image and the instruction for the model to locate the correct box in the image. The model will first generate a text description of the image, providing the coordinates for all of the blocks in the image as well as their color. This is done by the keypoint detection model that is inspired from the Pix2Seq model [1]. The output of Pix2Seq and the instruction input will be given to the fine tuned Large Language Model [2]. The output will be a dictionary of the x and y keypoint coordinates that the model gives with high confidence to be the correct location of the image and is plotted on the original figure.</figcaption>
 </figure>
 
-# Results
-
-[Insert results here]
 
 # Basic setup before running the code
 
