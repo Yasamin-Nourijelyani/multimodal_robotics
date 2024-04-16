@@ -53,7 +53,9 @@ python3 -m src.run
 ```
 
 # Citations
-[1] Pix2Seq
-[2] Mistral7B
+[1] Chen, T., Saxena, S., Li, L., Fleet, D. J., & Hinton, G. (2022). Pix2seq: A Language Modeling Framework for Object Detection. https://doi.org/10.48550/arxiv.2109.10852
 
+[2] Jiang, A. Q., Sablayrolles, A., Mensch, A., Bamford, C., Chaplot, D. S., Casas, D. de las, Bressand, F., Lengyel, G., Lample, G., Saulnier, L., Lavaud, L. R., Lachaux, M.-A., Stock, P., Scao, T. L., Lavril, T., Wang, T., Lacroix, T., & Sayed, W. E. (2023). Mistral 7B. https://doi.org/10.48550/arxiv.2310.06825
+
+[3] Azkune, G., Salaberria, A., & Agirre, E. (2024). Grounding spatial relations in text-only language models. Neural Networks, 170, 215–226. https://doi.org/10.1016/j.neunet.2023.11.031
 
